@@ -169,7 +169,7 @@ Custom agenda command definitions
 
 ** Refile settings
 #+BEGIN_SRC emacs-lisp
-	(setq org-refile-targets (quote ((nil :maxlevel . 9)
+	(setq org-refile-targets (quote ((nil :maxlevel .9)
                                    (org-agenda-files :maxlevel . 9))))
 #+END_SRC
 ** Org keybinds
