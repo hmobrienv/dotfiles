@@ -102,12 +102,9 @@ Do not dim blocked tasks
 Custom agenda command definitions
 #+BEGIN_SRC emacs-lisp
 	(setq org-agenda-custom-commands
-		(quote ((" " "Agenda"
-						 ((agenda "" nil)
-							(tags "REFILE"
-										((org-agenda-overriding-header "Tasks to Refile")
-										 (org-tags-match-list-sublevels nil)))) 
-             nil))))
+				'(("o" "Work Agenda"
+           ((agenda "")
+            (tags-todo "@work")))))
 #+END_SRC
 
 ** Configure display preferences
@@ -148,7 +145,12 @@ TODO Keywords
 
 Tags
 #+BEGIN_SRC emacs-lisp
-	(setq org-tag-alist '(("@work" . ?w) ("@home" . ?h)))
+	(setq org-tag-alist '(("@work" . ?w) 
+												("@home" . ?h)
+												("@errand" . ?e)
+												("PERSONAL" . ?p)
+                        ("ORG" . ?o)
+                        ("NOTE" . ?n)))
 #+END_SRC
 
 ** Archive when done
