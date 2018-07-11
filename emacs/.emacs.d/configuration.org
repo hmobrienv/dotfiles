@@ -35,7 +35,11 @@ Always compile packages, and use the newest version available.
 #+BEGIN_SRC emacs-lisp
 	(defun hmov/reload-config ()
 		(interactive)
-    (load-file "~/.emacs.d/init.el"))
+		(load-file "~/.emacs.d/init.el"))
+
+  (defun hmov/gtd ()
+    (interactive)
+    (find-file "~/Nextcloud/org/index.org"))
 #+END_SRC
   
 * Display preferences
@@ -125,7 +129,7 @@ Custom agenda command definitions
 
 ** Task and org capture management
 #+BEGIN_SRC emacs-lisp
-	(setq org-directory "~/Nextcloud/org")
+	(setq org-directory "~/Nextcloud/org/")
 
 	(defun org-file-path (filename)
 		(concat (file-name-as-directory org-directory) filename))
@@ -135,6 +139,16 @@ Custom agenda command definitions
 	(setq org-archive-location
 	(concat (org-file-path "archive.org") "::* From %s"))
 
+#+END_SRC
+
+TODO Keywords
+#+BEGIN_SRC emacs-lisp
+	(setq org-todo-keywords '((sequence "TODO(t)" "NEXT(n)" "WAITING(w)" "|" "DONE(d)" "CANCELLED(c)")))
+#+END_SRC
+
+Tags
+#+BEGIN_SRC emacs-lisp
+	(setq org-tag-alist '(("@work" . ?w) ("@home" . ?h)))
 #+END_SRC
 
 ** Archive when done
@@ -157,7 +171,7 @@ Custom agenda command definitions
 
 				("t" "Todo"
 				 entry
-				 (file+headline org-inbox-file)
+				 (file org-inbox-file)
 				 "* TODO %?\n")
 
 	      ("n" "note" 
@@ -200,8 +214,27 @@ Enable shallow indentation
 #+END_SRC
 
 
-
 ** Lisps
 #+BEGIN_SRC emacs-lisp
 	(setq lispy-mode-hooks '(lisp-mode-hook))
 #+END_SRC
+* Backup Settings
+Place add backups in one directory and purge weekly
+#+BEGIN_SRC emacs-lisp
+  (setq temporary-file-directory "~/Nextcloud/temp")
+	(setq backup-directory-alist
+		`((".*" . ,temporary-file-directory)))
+	(setq auto-save-file-name-transforms
+		`((".*" ,temporary-file-directory t)))
+	(message "Deleting old backup files...")
+	(let ((week (* 60 60 24 7))
+				(current (float-time (current-time))))
+		(dolist (file (directory-files temporary-file-directory t))
+			(when (and (backup-file-name-p file)
+								 (> (- current (float-time (nth 5 (file-attributes file))))
+										week))
+				(message "%s" file)
+				(delete-file file))))
+#+END_SRC
+
+
