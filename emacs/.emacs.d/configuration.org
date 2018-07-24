@@ -90,7 +90,8 @@ Configure solarized-dark theme
 
 * Org-Mode
 ** Modules
-(add-tolist- 'org-modules 'org-timer)
+#+BEGIN_SRC emacs-lisp
+#+END_SRC
 ** Org Agenda 
 #+BEGIN_SRC emacs-lisp
 	(setq org-agenda-files (quote ("~/Nextcloud/org")))
@@ -106,9 +107,24 @@ Custom agenda command definitions
 	(setq org-agenda-custom-commands
 				'((" " "Work Agenda"
 					 ((agenda "")
+						(todo "NEXT")
 						(tags-todo "REFILE")
 						(tags-todo "@work")
+						(tags-todo "-CANCELLED/!"
+							((org-agenda-overriding-header "Projects")
+							 (org-agenda-skip-function 'bh/skip-non-projects)
+							 (org-tags-match-list-sublevels 'indented)
+							 (org-agenda-sorting-strategy
+							 '(category-keep))))
 					 ))
+					("w" "Work Agenda"
+						((agenda "" ((org-agenda-span 1)))
+						 (tags-todo "SPRINT")
+						 (tags-todo "@work")
+					 ))
+          ("r" "Refile"
+            ((tags-todo "REFILE")
+           ))
 				 ))
 #+END_SRC
 
@@ -150,18 +166,20 @@ show parens
 
 TODO Keywords
 #+BEGIN_SRC emacs-lisp
-	(setq org-todo-keywords '((sequence "TODO(t)" "NEXT(n)" "WAITING(w)" "|" "DONE(d)" "CANCELLED(c)")))
+  (setq org-todo-keywords '((sequence "TODO(t)" "NEXT(n)" "WAITING(w)" "|" "DONE(d)" "CANCELLED(c)")))
 #+END_SRC
 
 Tags
 #+BEGIN_SRC emacs-lisp
-	(setq org-tag-alist '(("@work" . ?w) 
-												("@home" . ?h)
-												("@errand" . ?e)
-												("PERSONAL" . ?p)
-												("ORG" . ?o)
-                        ("SPRINT" . ?s)
-												("NOTE" . ?n)))
+  (setq org-tag-alist '(("@work" . ?w) 
+			      ("@home" . ?h)
+			      ("@errand" . ?e)
+			      ("@computer" . ?c)
+                              ("@phone" . ?p)
+                              ("PERSONAL" . ?P)
+                              ("ORG" . ?o)
+                              ("SPRINT" . ?s)
+			      ("NOTE" . ?n)))
 
 #+END_SRC
 
@@ -486,13 +504,17 @@ Helper function to help define projects for agenda views
 ** Org keybinds
 
 #+BEGIN_SRC emacs-lisp
+	(add-hook 'org-agenda-mode-hook
+	  (lambda ()
+		  (define-key org-agenda-mode-map "k" 'evil-previous-line)
+	    (define-key org-agenda-mode-map "j" 'evil-next-line)
+	))
+
 	(define-key org-mode-map(kbd "C-c C-x C-s") 'hmov/mark-done-and-archive)
 	(define-key org-mode-map(kbd "C-c C-x C-p") 'org-pomodoro)
 	(define-key global-map "\C-cl" 'org-store-link)
 	(define-key global-map "\C-cc" 'org-capture)
 	(define-key global-map "\C-ca" 'org-agenda)
-	(define-key org-agenda-mode-map "k" 'evil-previous-line)
-  (define-key org-agenda-mode-map "j" 'evil-next-line)
 #+END_SRC
 
 Hit =C-c i= to quickly open up my todo list.
@@ -539,7 +561,7 @@ Place add backups in one directory and purge weekly
 #+BEGIN_SRC emacs-lisp
   (setq temporary-file-directory "~/Nextcloud/temp")
 	(setq backup-directory-alist
-		`((".*" . ,temporary-file-directory)))
+		`((".*" ,temporary-file-directory)))
 	(setq auto-save-file-name-transforms
 		`((".*" ,temporary-file-directory t)))
 	(message "Deleting old backup files...")
