@@ -5,9 +5,9 @@
 #+BEGIN_SRC emacs-lisp
 (require 'package)
 
-(add-to-list 'package-archives '("org" . "http://orgmode.org/elpa/"))
-(add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/"))
-(add-to-list 'package-archives '("melpa-stable" . "http://stable.melpa.org/packages/"))
+(add-to-list 'package-archives '("org" . "https://orgmode.org/elpa/"))
+(add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/"))
+(add-to-list 'package-archives '("melpa-stable" . "https://stable.melpa.org/packages/"))
 
 (setq package-enable-at-startup nil)
 (package-initialize)
@@ -88,13 +88,29 @@ Configure solarized-dark theme
 
 #+END_SRC
 
+* Org-Journal
+#+BEGIN_SRC emacs-lisp
+	(use-package org-journal
+			:ensure t)
+
+	(require 'org-journal)
+	(setq org-journal-dir "~/Nextcloud/org/journal")
+	(defun org-journal-find-location ()
+		;; Open today's journal, but specify a non-nil prefix argument in order to
+		;; inhibit inserting the heading; org-capture will insert the heading.
+		(org-journal-new-entry t)
+		;; Position point on the journal's top-level heading so that org-capture
+	;; will add the new entry as a child entry.
+	(goto-char (point-min)))
+
+#+END_SRC
 * Org-Mode
 ** Modules
 #+BEGIN_SRC emacs-lisp
 #+END_SRC
 ** Org Agenda 
 #+BEGIN_SRC emacs-lisp
-	(setq org-agenda-files (quote ("~/Nextcloud/org")))
+	(setq org-agenda-files '("~/Nextcloud/org" "~/Nextcloud/org/journal"))
 #+END_SRC
 
 Do not dim blocked tasks
@@ -105,11 +121,12 @@ Do not dim blocked tasks
 Custom agenda command definitions
 #+BEGIN_SRC emacs-lisp
 	(setq org-agenda-custom-commands
-				'((" " "Work Agenda"
+				'((" " "Agenda"
 					 ((agenda "")
 						(todo "NEXT")
 						(tags-todo "REFILE")
-						(tags-todo "@work")
+						(tags-todo "SPRINT")
+						(tags-todo "@cybersight")
 						(tags-todo "-CANCELLED/!"
 							((org-agenda-overriding-header "Projects")
 							 (org-agenda-skip-function 'bh/skip-non-projects)
@@ -120,11 +137,11 @@ Custom agenda command definitions
 					("w" "Work Agenda"
 						((agenda "" ((org-agenda-span 1)))
 						 (tags-todo "SPRINT")
-						 (tags-todo "@work")
+						 (tags-todo "@cybersight")
 					 ))
-          ("r" "Refile"
-            ((tags-todo "REFILE")
-           ))
+					("r" "Refile"
+						((tags-todo "REFILE")
+					 ))
 				 ))
 #+END_SRC
 
@@ -171,15 +188,13 @@ TODO Keywords
 
 Tags
 #+BEGIN_SRC emacs-lisp
-  (setq org-tag-alist '(("@work" . ?w) 
-			      ("@home" . ?h)
-			      ("@errand" . ?e)
-			      ("@computer" . ?c)
-                              ("@phone" . ?p)
-                              ("PERSONAL" . ?P)
-                              ("ORG" . ?o)
-                              ("SPRINT" . ?s)
-			      ("NOTE" . ?n)))
+	(setq org-tag-alist '(("@cybersight" . ?c) 
+						("@home" . ?h)
+						("@errand" . ?e)
+						("@computer" . ?C)
+						("@phone" . ?p)
+						("SPRINT" . ?s)
+            ("PROJECT" . ?P)))
 
 #+END_SRC
 
@@ -487,7 +502,10 @@ Helper function to help define projects for agenda views
 			 ("T" "Tickler" 
 				entry
 				(file+headline "~/Nextcloud/org/tickler.org" "Tickler")
-			  "* %i%? \n %U")
+				"* %i%? \n %U")
+       
+       ("j" "Journal entry" entry (function org-journal-find-location)
+         "* %(format-time-string org-journal-time-format)%^{Title}\n%i%?")
 
 			 ("n" "note" 
 				entry 
@@ -561,7 +579,7 @@ Place add backups in one directory and purge weekly
 #+BEGIN_SRC emacs-lisp
   (setq temporary-file-directory "~/Nextcloud/temp")
 	(setq backup-directory-alist
-		`((".*" ,temporary-file-directory)))
+		`((".*" . ,temporary-file-directory)))
 	(setq auto-save-file-name-transforms
 		`((".*" ,temporary-file-directory t)))
 	(message "Deleting old backup files...")

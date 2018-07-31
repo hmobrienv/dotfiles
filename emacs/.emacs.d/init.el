@@ -13,7 +13,7 @@
  '(org-tags-column -100)
  '(package-selected-packages
 	 (quote
-		(org-pomodoro solarized-theme auto-compile org-bullets evil use-package))))
+		(org-journal org-pomodoro solarized-theme auto-compile org-bullets evil use-package))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
