@@ -1,7 +1,7 @@
 #+TITLE: Emacs Configuration
 
 * Configure =use-package=
-
+	
 #+BEGIN_SRC emacs-lisp
 (require 'package)
 
@@ -43,6 +43,15 @@ Always compile packages, and use the newest version available.
 #+END_SRC
   
 * Display preferences
+Set up unicode
+#+BEGIN_SRC emacs-lisp
+(prefer-coding-system       'utf-8)
+(set-default-coding-systems 'utf-8)
+(set-terminal-coding-system 'utf-8)
+(set-keyboard-coding-system 'utf-8)
+(setq default-buffer-file-coding-system 'utf-8)                      
+(setq x-select-request-type '(UTF8_STRING COMPOUND_TEXT TEXT STRING))
+#+END_SRC
 
 Remove scrollbar
 
@@ -59,6 +68,12 @@ Remove toolbar
 Install solarized-theme
 #+BEGIN_SRC emacs-lisp
 (use-package solarized-theme
+    :ensure t)
+#+END_SRC
+
+Use unicode fonts package
+#+BEGIN_SRC emacs-lisp
+(use-package unicode-fonts
     :ensure t)
 #+END_SRC
 
@@ -88,22 +103,6 @@ Configure solarized-dark theme
 
 #+END_SRC
 
-* Org-Journal
-#+BEGIN_SRC emacs-lisp
-	(use-package org-journal
-			:ensure t)
-
-	(require 'org-journal)
-	(setq org-journal-dir "~/Nextcloud/org/journal")
-	(defun org-journal-find-location ()
-		;; Open today's journal, but specify a non-nil prefix argument in order to
-		;; inhibit inserting the heading; org-capture will insert the heading.
-		(org-journal-new-entry t)
-		;; Position point on the journal's top-level heading so that org-capture
-	;; will add the new entry as a child entry.
-	(goto-char (point-min)))
-
-#+END_SRC
 * Org-Mode
 ** Modules
 #+BEGIN_SRC emacs-lisp
@@ -153,7 +152,10 @@ Custom agenda command definitions
 			:hook (org-mode . org-bullets-mode))
 
 	(setq org-src-tab-acts-natively t)
-	(setq org-ellipsis "⤵")
+	(if (eq system-type 'windows-nt)
+			(setq org-ellipsis "...")
+    (setq org-ellipsis "⤵")
+	)
 #+END_SRC
 
 show parens
@@ -548,20 +550,40 @@ Hit =C-c i= to quickly open up my todo list.
 #+END_SRC
 ** Babel
 #+BEGIN_SRC emacs-lisp
-(org-babel-do-load-languages
- 'org-babel-load-languages
- '((R . t)
-   (emacs-lisp . t)
-   (haskell . nil)
-   (ledger . t)         ;this is the important one for this tutorial
-   (octave . t)))
+	(org-babel-do-load-languages
+	 'org-babel-load-languages
+	 '((R . t)
+		 (emacs-lisp . t)
+		 (haskell . nil)
+		 (ledger . t)         ;this is the important one for this tutorial
+		 (octave . t)))
 #+END_SRC
+
+#+RESULTS:
+
 ** Pomodoro
 #+BEGIN_SRC emacs-lisp
   (use-package org-pomodoro
 	  :ensure t)
 
 #+END_SRC
+** Org-Journal
+ #+BEGIN_SRC emacs-lisp
+	 (use-package org-journal
+			 :ensure t)
+
+	 (require 'org-journal)
+	 (setq org-journal-dir "~/Nextcloud/org/journal")
+	 (defun org-journal-find-location ()
+		 ;; Open today's journal, but specify a non-nil prefix argument in order to
+		 ;; inhibit inserting the heading; org-capture will insert the heading.
+		 (org-journal-new-entry t)
+		 ;; Position point on the journal's top-level heading so that org-capture
+	 ;; will add the new entry as a child entry.
+	 (goto-char (point-min)))
+
+ #+END_SRC
+
 * Programming Environments
 
 Enable shallow indentation
@@ -591,6 +613,19 @@ Place add backups in one directory and purge weekly
 										week))
 				(message "%s" file)
 				(delete-file file))))
+#+END_SRC
+
+* Ledger-Mode
+#+BEGIN_SRC emacs-lisp
+	(use-package ledger-mode
+		:mode ("\\.dat\\'"
+					 "\\.ledger\\'")
+    :custom (ledger-clear-whole-transactions 5) 
+    :ensure t)
+   
+
+	(use-package flycheck-ledger :after ledger-mode)
+
 #+END_SRC
 
 
