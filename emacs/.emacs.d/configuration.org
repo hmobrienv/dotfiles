@@ -37,13 +37,23 @@ Always compile packages, and use the newest version available.
 		(interactive)
 		(load-file "~/.emacs.d/init.el"))
 
-  (defun hmov/gtd ()
-    (interactive)
-    (find-file "~/Nextcloud/org/index.org"))
+	(defun hmov/gtd ()
+		(interactive)
+		(find-file "~/Nextcloud/org/index.org"))
+
+	(defun hmov/notes ()
+		(interactive)
+		(find-file "~/Nextcloud/org/notes.org"))
+
+  (global-set-key (kbd "C-c n") 'hmov/notes)
 #+END_SRC
   
 * Display preferences
-Set up unicode
+*rn off bell
+#+BEGIN_SRC emacs-lisp
+(setq visible-bell 1)
+#+END_SRC
+** Set up unicode
 #+BEGIN_SRC emacs-lisp
 (prefer-coding-system       'utf-8)
 (set-default-coding-systems 'utf-8)
@@ -52,32 +62,31 @@ Set up unicode
 (setq default-buffer-file-coding-system 'utf-8)                      
 (setq x-select-request-type '(UTF8_STRING COMPOUND_TEXT TEXT STRING))
 #+END_SRC
-
-Remove scrollbar
+** Remove scrollbar
 
 #+BEGIN_SRC emacs-lisp
 (toggle-scroll-bar -1)
 #+END_SRC
 
-Remove toolbar
+** Remove toolbar
 
 #+BEGIN_SRC emacs-lisp
 (tool-bar-mode -1)
 #+END_SRC
 
-Install solarized-theme
+** Install solarized-theme
 #+BEGIN_SRC emacs-lisp
 (use-package solarized-theme
     :ensure t)
 #+END_SRC
 
-Use unicode fonts package
+** Use unicode fonts package
 #+BEGIN_SRC emacs-lisp
 (use-package unicode-fonts
     :ensure t)
 #+END_SRC
 
-Configure solarized-dark theme
+** Configure solarized-dark theme
 #+BEGIN_SRC emacs-lisp
 (load-theme 'solarized-dark t)
 #+END_SRC
@@ -104,13 +113,37 @@ Configure solarized-dark theme
 #+END_SRC
 
 * Org-Mode
-** Modules
-#+BEGIN_SRC emacs-lisp
-#+END_SRC
+** Org-Journal
+ #+BEGIN_SRC emacs-lisp
+	 (use-package org-journal
+			 :ensure t)
+
+	 (require 'org-journal)
+	 (setq org-journal-dir "~/Nextcloud/org/journal")
+   (setq org-journal-file-format "%m%d%Y.org")
+
+	 (global-set-key (kbd "C-c j") 'org-journal-new-entry)
+
+	 ;;(defun org-journal-find-location ()
+		 ;; Open today's journal, but specify a non-nil prefix argument in order to
+		 ;; inhibit inserting the heading; org-capture will insert the heading.
+		 ;;(org-journal-new-entry t)
+		 ;; Position point on the journal's top-level heading so that org-capture
+	 ;; will add the new entry as a child entry.
+	 ;;(goto-char (point-min)))
+
+ #+END_SRC
+
 ** Org Agenda 
 #+BEGIN_SRC emacs-lisp
-	(setq org-agenda-files '("~/Nextcloud/org" "~/Nextcloud/org/journal"))
+	(org-journal-update-auto-mode-alist)
+
 #+END_SRC
+
+#+BEGIN_SRC emacs-lisp
+	(setq org-agenda-files (list "~/Nextcloud/org" 
+                               "~/Nextcloud/org/journal"))
+#+End_src
 
 Do not dim blocked tasks
 #+BEGIN_SRC emacs-lisp
@@ -522,19 +555,20 @@ Helper function to help define projects for agenda views
                                    (org-agenda-files :maxlevel . 9))))
 #+END_SRC
 ** Org keybinds
-
 #+BEGIN_SRC emacs-lisp
-	(add-hook 'org-agenda-mode-hook
-	  (lambda ()
-		  (define-key org-agenda-mode-map "k" 'evil-previous-line)
-	    (define-key org-agenda-mode-map "j" 'evil-next-line)
-	))
+		(add-hook 'org-agenda-mode-hook
+			(lambda ()
+				(define-key org-agenda-mode-map "k" 'evil-previous-line)
+				(define-key org-agenda-mode-map "j" 'evil-next-line)
+		))
+
+	(setq org-return-follows-link t)
 
 	(define-key org-mode-map(kbd "C-c C-x C-s") 'hmov/mark-done-and-archive)
-	(define-key org-mode-map(kbd "C-c C-x C-p") 'org-pomodoro)
-	(define-key global-map "\C-cl" 'org-store-link)
-	(define-key global-map "\C-cc" 'org-capture)
-	(define-key global-map "\C-ca" 'org-agenda)
+		(define-key org-mode-map(kbd "C-c C-x C-p") 'org-pomodoro)
+		(define-key global-map "\C-cl" 'org-store-link)
+		(define-key global-map "\C-cc" 'org-capture)
+		(define-key global-map "\C-ca" 'org-agenda)
 #+END_SRC
 
 Hit =C-c i= to quickly open up my todo list.
@@ -567,23 +601,6 @@ Hit =C-c i= to quickly open up my todo list.
 	  :ensure t)
 
 #+END_SRC
-** Org-Journal
- #+BEGIN_SRC emacs-lisp
-	 (use-package org-journal
-			 :ensure t)
-
-	 (require 'org-journal)
-	 (setq org-journal-dir "~/Nextcloud/org/journal")
-	 (defun org-journal-find-location ()
-		 ;; Open today's journal, but specify a non-nil prefix argument in order to
-		 ;; inhibit inserting the heading; org-capture will insert the heading.
-		 (org-journal-new-entry t)
-		 ;; Position point on the journal's top-level heading so that org-capture
-	 ;; will add the new entry as a child entry.
-	 (goto-char (point-min)))
-
- #+END_SRC
-
 * Programming Environments
 
 Enable shallow indentation
