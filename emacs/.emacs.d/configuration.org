@@ -33,6 +33,11 @@ Always compile packages, and use the newest version available.
 
 * Utility Functions
 #+BEGIN_SRC emacs-lisp
+	(defun hmov/revert-buffer-no-confirm ()
+		 "Revert buffer without confirmation -- used for loading in remote updates"
+		(interactive)
+		(revert-buffer :ignore-auto :noconfirm))
+
 	(defun hmov/reload-config ()
 		(interactive)
 		(load-file "~/.emacs.d/init.el"))
@@ -45,7 +50,7 @@ Always compile packages, and use the newest version available.
 		(interactive)
 		(find-file "~/Nextcloud/org/notes.org"))
 
-  (global-set-key (kbd "C-c n") 'hmov/notes)
+	(global-set-key (kbd "C-c n") 'hmov/notes)
 #+END_SRC
   
 * Display preferences
@@ -141,8 +146,8 @@ Always compile packages, and use the newest version available.
 #+END_SRC
 
 #+BEGIN_SRC emacs-lisp
-	(setq org-agenda-files (list "~/Nextcloud/org" 
-                               "~/Nextcloud/org/journal"))
+	(setq org-agenda-files (list "~/Nextcloud/org/" 
+                               "~/Nextcloud/journal/"))
 #+End_src
 
 Do not dim blocked tasks
