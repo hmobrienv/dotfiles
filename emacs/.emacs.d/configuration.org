@@ -1,5 +1,4 @@
 #+TITLE: Emacs Configuration
-
 * Configure =use-package=
 	
 #+BEGIN_SRC emacs-lisp
@@ -45,7 +44,7 @@ Always compile packages, and use the newest version available.
 		(interactive)
 		(find-file "~/Nextcloud/org/notes.org"))
 
-  (global-set-key (kbd "C-c n") 'hmov/notes)
+	(global-set-key (kbd "C-c n") 'hmov/notes)
 #+END_SRC
   
 * Display preferences
@@ -112,37 +111,49 @@ Always compile packages, and use the newest version available.
 
 #+END_SRC
 
+* Magit
+#+BEGIN_SRC emacs-lisp
+	(use-package magit
+			:ensure t)
+	(use-package evil-magit
+			:ensure t)
+
+
+	(require 'magit)
+  (require 'evil-magit)
+
+
+	(global-set-key (kbd "C-c g") 'magit-status)
+#+END_SRC
 * Org-Mode
 ** Org-Journal
  #+BEGIN_SRC emacs-lisp
 	 (use-package org-journal
-			 :ensure t)
-
+		 :custom
+		 (org-journal-dir "~/Nextcloud/journal/")
+		 :ensure t)
 	 (require 'org-journal)
-	 (setq org-journal-dir "~/Nextcloud/org/journal")
-   (setq org-journal-file-format "%m%d%Y.org")
-
 	 (global-set-key (kbd "C-c j") 'org-journal-new-entry)
-
-	 ;;(defun org-journal-find-location ()
-		 ;; Open today's journal, but specify a non-nil prefix argument in order to
-		 ;; inhibit inserting the heading; org-capture will insert the heading.
-		 ;;(org-journal-new-entry t)
-		 ;; Position point on the journal's top-level heading so that org-capture
-	 ;; will add the new entry as a child entry.
-	 ;;(goto-char (point-min)))
+			;;(defun org-journal-find-location ()
+			;; Open today's journal, but specify a non-nil prefix argument in order to
+			;; inhibit inserting the heading; org-capture will insert the heading.
+			;;(org-journal-new-entry t)
+			;; Position point on the journal's top-level heading so that org-capture
+			;; will add the new entry as a child entry.
+			;;(goto-char (point-min)))
+   (defun hmov/save-and-kill-org-journal ()
+      "Saves the buffer and kills the window when in org-journal-mode"
+      (interactive)
+      (save-buffer)
+      (kill-buffer-and-window))
+   (define-key org-journal-mode-map (kbd "C-x C-s") 'hmov/save-and-kill-org-journal)
 
  #+END_SRC
 
 ** Org Agenda 
 #+BEGIN_SRC emacs-lisp
-	(org-journal-update-auto-mode-alist)
-
-#+END_SRC
-
-#+BEGIN_SRC emacs-lisp
 	(setq org-agenda-files (list "~/Nextcloud/org" 
-                               "~/Nextcloud/org/journal"))
+                               "~/Nextcloud/journal"))
 #+End_src
 
 Do not dim blocked tasks
@@ -158,6 +169,7 @@ Custom agenda command definitions
 						(todo "NEXT")
 						(tags-todo "REFILE")
 						(tags-todo "SPRINT")
+            (tags-todo "@me")
 						(tags-todo "@cybersight")
 						(tags-todo "-CANCELLED/!"
 							((org-agenda-overriding-header "Projects")
@@ -601,6 +613,21 @@ Hit =C-c i= to quickly open up my todo list.
 	  :ensure t)
 
 #+END_SRC
+
+
+** org-gcal
+clientID: 10093467770-45cn5vedlhrhalm85d52g58eo4ien9nv.apps.googleusercontent.com
+clientSecret: 9SYR7hB0wqZRLT9rp7-AMmeD
+#+BEGIN_SRC emacs-lisp
+	(use-package org-gcal
+		:ensure t)
+	(require 'org-gcal)
+	(setq org-gcal-client-id "10093467770-45cn5vedlhrhalm85d52g58eo4ien9nv.apps.googleusercontent.com"
+				org-gcal-client-secret "9SYR7hB0wqZRLT9rp7-AMmeD"
+        org-gcal-file-alist '(("mobrien@cybersight.com" . "~/Nextcloud/org/gcal.org")))
+
+
+  #+END_SRC
 * Programming Environments
 
 Enable shallow indentation
@@ -608,6 +635,15 @@ Enable shallow indentation
   (setq-default tab-width 2)
 #+END_SRC
 
+
+** Python Settings
+#+BEGIN_SRC emacs-lisp
+	(if (eq system-type 'windows-nt)
+			(setq python-shell-interpreter "~/Anaconda3/python.exe")
+		(setq python-shell-interpreter "/bin/python.exe")
+	)
+
+#+END_SRC
 
 ** Lisps
 #+BEGIN_SRC emacs-lisp
