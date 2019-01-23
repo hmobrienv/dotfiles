@@ -1,0 +1,1 @@
+("~/Code/work/api-integration/" "~/Code/dotfiles/" "~/Code/haskell/48hours/" "~/Code/doji-mobile/" "~/Code/coinpro-rest/" "~/Code/coinpro/" "~/Code/Coin-Ticker/CoinTickerApp/" "~/Code/Coin-Ticker/app/" "~/Code/BittrexBot/go-bittrex/" "~/Code/photon/demo/" "~/Code/photon/demo/lib/particle_ADXL362/")

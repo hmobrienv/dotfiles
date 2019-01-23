@@ -49,13 +49,12 @@ Always compile packages, and use the newest version available.
 		(interactive)
 		(find-file "~/Nextcloud/org/notes.org"))
 
-	(global-set-key (kbd "C-c n") 'hmov/notes)
+	(global-set-key (kbd "C-c h") 'hmov/notes)
 #+END_SRC
   
 * Display preferences
-*rn off bell
 #+BEGIN_SRC emacs-lisp
-(setq visible-bell 1)
+	(setq visible-bell 1)
 #+END_SRC
 ** Set up unicode
 #+BEGIN_SRC emacs-lisp
@@ -66,6 +65,7 @@ Always compile packages, and use the newest version available.
 (setq default-buffer-file-coding-system 'utf-8)                      
 (setq x-select-request-type '(UTF8_STRING COMPOUND_TEXT TEXT STRING))
 #+END_SRC
+
 ** Remove scrollbar
 
 #+BEGIN_SRC emacs-lisp
@@ -78,10 +78,18 @@ Always compile packages, and use the newest version available.
 (tool-bar-mode -1)
 #+END_SRC
 
-** Install solarized-theme
+** Configure theme
 #+BEGIN_SRC emacs-lisp
-(use-package solarized-theme
+	;(use-package solarized-theme
+	;		:ensure t)
+
+	(use-package doom-themes
     :ensure t)
+	(setq doom-themes-enable-bold t
+				doom-themes-enable-italic t)
+	(load-theme 'doom-one t)
+  (doom-themes-visual-bell-config)
+  (doom-themes-org-config)
 #+END_SRC
 
 ** Use unicode fonts package
@@ -90,9 +98,23 @@ Always compile packages, and use the newest version available.
     :ensure t)
 #+END_SRC
 
-** Configure solarized-dark theme
 #+BEGIN_SRC emacs-lisp
-(load-theme 'solarized-dark t)
+  ;(load-theme 'solarized-dark t)
+#+END_SRC
+
+** Font size 
+#+BEGIN_SRC emacs-lisp
+(set-face-attribute 'default nil :height 140)
+#+END_SRC
+* Projectile
+#+BEGIN_SRC emacs-lisp
+	(use-package projectile
+		:ensure t)
+
+	(projectile-mode +1)
+  (setq projectile-project-search-path '("~/Code"))
+	(define-key projectile-mode-map (kbd "s-p") 'projectile-command-map)
+	(define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
 #+END_SRC
 
 * Configure evil-mode
@@ -116,6 +138,41 @@ Always compile packages, and use the newest version available.
 
 #+END_SRC
 
+* Configure dashboard
+#+BEGIN_SRC emacs-lisp
+	(defun hmov/dashboard-banner ()
+		"""Set a dashboard banner including information on package 
+     initialization time and garbage collections."""
+    (setq dashboard-banner-logo-title
+      (format "Emacs ready in %.2f seconds with %d garbage collections."
+              (float-time (time-subtract after-init-time before-init-time)) gcs-done)))
+
+(use-package dashboard
+  :init
+  (add-hook 'after-init-hook 'dashboard-refresh-buffer)
+  (add-hook 'dashboard-mode-hook 'hmov/dashboard-banner)
+  :config
+  (setq dashboard-startup-banner 'logo)
+  (dashboard-setup-startup-hook)
+  :ensure t)
+
+#+END_SRC
+* NeoTree
+#+BEGIN_SRC emacs-lisp
+	(use-package neotree
+		:ensure t)
+	(global-set-key [f5] 'neotree-toggle)
+
+	(evil-define-key 'normal neotree-mode-map (kbd "TAB") 'neotree-enter)
+	(evil-define-key 'normal neotree-mode-map (kbd "SPC") 'neotree-quick-look)
+	(evil-define-key 'normal neotree-mode-map (kbd "q") 'neotree-hide)
+	(evil-define-key 'normal neotree-mode-map (kbd "RET") 'neotree-enter)
+	(evil-define-key 'normal neotree-mode-map (kbd "g") 'neotree-refresh)
+	(evil-define-key 'normal neotree-mode-map (kbd "n") 'neotree-next-line)
+	(evil-define-key 'normal neotree-mode-map (kbd "p") 'neotree-previous-line)
+	(evil-define-key 'normal neotree-mode-map (kbd "A") 'neotree-stretch-toggle)
+	(evil-define-key 'normal neotree-mode-map (kbd "H") 'neotree-hidden-file-toggle)
+#+END_SRC
 * Magit
 #+BEGIN_SRC emacs-lisp
 	(use-package magit
@@ -129,6 +186,15 @@ Always compile packages, and use the newest version available.
 
 
 	(global-set-key (kbd "C-c g") 'magit-status)
+#+END_SRC
+* Wakatime
+#+BEGIN_SRC emacs-lisp
+	(use-package wakatime-mode
+		:ensure t)
+  (global-wakatime-mode)
+	(setq wakatime-api-key "4d4ab13d-5c0e-460f-8efe-4b6b4abd2982")
+	(setq wakatime-cli-path "/usr/local/bin/wakatime")
+
 #+END_SRC
 * Org-Mode
 ** Org-Journal
@@ -194,6 +260,20 @@ Custom agenda command definitions
 				 ))
 #+END_SRC
 
+** org-projectile 
+#+BEGIN_SRC emacs-lisp
+	(use-package org-projectile
+		:bind (("C-c n p" . org-projectile-project-todo-completing-read)
+					 ("C-c c" . org-capture))
+		:config 
+		(progn
+			(setq org-projectile-projects-file
+						"~/Nextcloud/org/projects.org")
+			(setq org-agenda-files (append org-agenda-files (org-projectile-todo-files)))
+      (push (org-projectile-project-todo-entry) org-capture-templates))
+    :ensure t)
+
+#+END_SRC
 ** Configure display preferences
 #+BEGIN_SRC emacs-lisp
 	(use-package org-bullets
@@ -559,10 +639,7 @@ Helper function to help define projects for agenda views
        ("j" "Journal entry" entry (function org-journal-find-location)
          "* %(format-time-string org-journal-time-format)%^{Title}\n%i%?")
 
-			 ("n" "note" 
-				entry 
-				(file org-inbox-file)
-				"* %? :NOTE:\n%U\n%a\n")))
+				))
 
 #+END_SRC
 
@@ -619,7 +696,6 @@ Hit =C-c i= to quickly open up my todo list.
 
 #+END_SRC
 
-
 ** org-gcal
 clientID: 10093467770-45cn5vedlhrhalm85d52g58eo4ien9nv.apps.googleusercontent.com
 clientSecret: 9SYR7hB0wqZRLT9rp7-AMmeD
@@ -634,12 +710,17 @@ clientSecret: 9SYR7hB0wqZRLT9rp7-AMmeD
 
   #+END_SRC
 * Programming Environments
+** Code checking
+#+BEGIN_SRC emacs-lisp
+	(use-package flycheck
+   	:ensure t
+    :init (global-flycheck-mode)) 
 
-Enable shallow indentation
+#+END_SRC
+** Enable shallow indentation
 #+BEGIN_SRC emacs-lisp
   (setq-default tab-width 2)
 #+END_SRC
-
 
 ** Python Settings
 #+BEGIN_SRC emacs-lisp
@@ -647,6 +728,10 @@ Enable shallow indentation
 			(setq python-shell-interpreter "~/Anaconda3/python.exe")
 		(setq python-shell-interpreter "/bin/python.exe")
 	)
+
+	(use-package anaconda-mode
+    :ensure t)
+  (add-hook 'python-mode-hook 'anaconda-mode)
 
 #+END_SRC
 

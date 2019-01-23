@@ -8,8 +8,8 @@
  (rear-context-string . "      :PROJECT:\n")
  (position . 455))
 ("org-capture-last-stored"
- (filename . "~/Nextcloud/org/inbox.org")
- (front-context-string . "* TODO Setup ren")
- (rear-context-string . " for work views\n")
- (position . 391))
+ (filename . "~/Nextcloud/org/projects.org")
+ (front-context-string . "** TODO Testing\n")
+ (rear-context-string . " log formatting\n")
+ (position . 186))
 )
