@@ -30,6 +30,15 @@ Always compile packages, and use the newest version available.
   (setq load-prefer-newer t)
 #+END_SRC
 
+Get path from shell
+#+BEGIN_SRC emacs-lisp
+	(use-package exec-path-from-shell
+		:ensure t
+	)
+  (when (memq window-system '(mac ns x))
+    (exec-path-from-shell-initialize))
+#+END_SRC
+
 * Utility Functions
 #+BEGIN_SRC emacs-lisp
 	(defun hmov/revert-buffer-no-confirm ()
@@ -43,11 +52,11 @@ Always compile packages, and use the newest version available.
 
 	(defun hmov/gtd ()
 		(interactive)
-		(find-file "~/Nextcloud/org/index.org"))
+		(find-file "~/Documents/org/index.org"))
 
 	(defun hmov/notes ()
 		(interactive)
-		(find-file "~/Nextcloud/org/notes.org"))
+		(find-file "~/Documents/org/notes.org"))
 
 	(global-set-key (kbd "C-c h") 'hmov/notes)
 #+END_SRC
@@ -55,6 +64,11 @@ Always compile packages, and use the newest version available.
 * Display preferences
 #+BEGIN_SRC emacs-lisp
 	(setq visible-bell 1)
+#+END_SRC
+
+#+BEGIN_SRC emacs-lisp
+  (setq split-height-threshold nil)
+	(setq split-width-threshold 0)
 #+END_SRC
 ** Set up unicode
 #+BEGIN_SRC emacs-lisp
@@ -126,7 +140,6 @@ Always compile packages, and use the newest version available.
 #+END_SRC
 
 * Configure helm
-
 #+BEGIN_SRC emacs-lisp
 (use-package helm
     :ensure t)
@@ -201,7 +214,7 @@ Always compile packages, and use the newest version available.
  #+BEGIN_SRC emacs-lisp
 	 (use-package org-journal
 		 :custom
-		 (org-journal-dir "~/Nextcloud/journal/")
+		 (org-journal-dir "~/Documents/journal/")
 		 :ensure t)
 	 (require 'org-journal)
 	 (global-set-key (kbd "C-c j") 'org-journal-new-entry)
@@ -223,8 +236,8 @@ Always compile packages, and use the newest version available.
 
 ** Org Agenda 
 #+BEGIN_SRC emacs-lisp
-	(setq org-agenda-files (list "~/Nextcloud/org/" 
-                               "~/Nextcloud/journal/"))
+	(setq org-agenda-files (list "~/Documents/org/" 
+                               "~/Documents/journal/"))
 #+End_src
 
 Do not dim blocked tasks
@@ -237,11 +250,8 @@ Custom agenda command definitions
 	(setq org-agenda-custom-commands
 				'((" " "Agenda"
 					 ((agenda "")
-						(todo "NEXT")
+						(todo "TODO")
 						(tags-todo "REFILE")
-						(tags-todo "SPRINT")
-            (tags-todo "@me")
-						(tags-todo "@cybersight")
 						(tags-todo "-CANCELLED/!"
 							((org-agenda-overriding-header "Projects")
 							 (org-agenda-skip-function 'bh/skip-non-projects)
@@ -268,7 +278,7 @@ Custom agenda command definitions
 		:config 
 		(progn
 			(setq org-projectile-projects-file
-						"~/Nextcloud/org/projects.org")
+						"~/Documents/org/projects.org")
 			(setq org-agenda-files (append org-agenda-files (org-projectile-todo-files)))
       (push (org-projectile-project-todo-entry) org-capture-templates))
     :ensure t)
@@ -301,7 +311,7 @@ show parens
 
 ** Task and org capture management
 #+BEGIN_SRC emacs-lisp
-	(setq org-directory "~/Nextcloud/org/")
+	(setq org-directory "~/Documents/org/")
 
 	(defun org-file-path (filename)
 		(concat (file-name-as-directory org-directory) filename))
@@ -633,7 +643,7 @@ Helper function to help define projects for agenda views
 
 			 ("T" "Tickler" 
 				entry
-				(file+headline "~/Nextcloud/org/tickler.org" "Tickler")
+				(file+headline "~/Documents/org/tickler.org" "Tickler")
 				"* %i%? \n %U")
        
        ("j" "Journal entry" entry (function org-journal-find-location)
@@ -705,7 +715,7 @@ clientSecret: 9SYR7hB0wqZRLT9rp7-AMmeD
 	(require 'org-gcal)
 	(setq org-gcal-client-id "10093467770-45cn5vedlhrhalm85d52g58eo4ien9nv.apps.googleusercontent.com"
 				org-gcal-client-secret "9SYR7hB0wqZRLT9rp7-AMmeD"
-        org-gcal-file-alist '(("mobrien@cybersight.com" . "~/Nextcloud/org/gcal.org")))
+        org-gcal-file-alist '(("mobrien@cybersight.com" . "~/Documents/org/gcal.org")))
 
 
   #+END_SRC
@@ -739,10 +749,15 @@ clientSecret: 9SYR7hB0wqZRLT9rp7-AMmeD
 #+BEGIN_SRC emacs-lisp
 	(setq lispy-mode-hooks '(lisp-mode-hook))
 #+END_SRC
+** Rust Settings
+#+BEGIN_SRC emacs-lisp
+(use-package rust-mode
+  :ensure t)
+#+END_SRC
 * Backup Settings
 Place add backups in one directory and purge weekly
 #+BEGIN_SRC emacs-lisp
-  (setq temporary-file-directory "~/Nextcloud/temp")
+  (setq temporary-file-directory "~/Documents/temp")
 	(setq backup-directory-alist
 		`((".*" . ,temporary-file-directory)))
 	(setq auto-save-file-name-transforms
