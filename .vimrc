@@ -1,6 +1,9 @@
 set nocompatible
 syntax on
 
+colorscheme apprentice
+let g:vimroom_ctermbackground="none"
+set encoding=UTF-8
 
 " install vimplug if not found
 if empty(glob('~/.vim/autoload/plug.vim'))
@@ -20,6 +23,9 @@ Plug 'scrooloose/nerdtree'
 Plug 'ctrlpvim/ctrlp.vim'
 Plug 'valloric/youcompleteme'
 Plug 'klen/python-mode'
+Plug 'wakatime/vim-wakatime'
+Plug 'vim-airline/vim-airline'
+Plug 'ryanoasis/vim-devicons'
 
 " Required. plugins available after.
 call plug#end()
@@ -40,6 +46,8 @@ map <C-n> :NERDTreeToggle<CR>
 " auto close if nerdtree is only one open 
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
 
+let g:NERDTreeWinSize=40
+
 """" ctrlp
 let g:ctrlp_map = '<c-p>'
 let g:ctrlp_cmd = 'CtrlP'
@@ -48,6 +56,8 @@ let g:ctrlp_cmd = 'CtrlP'
 " rust
 let g:rustfmt_autosave = 1
 
+" python
+let g:pymode_options_colorcolumn = 0
 
 " keybinds
 nmap <F2> :TagbarToggle<CR>
