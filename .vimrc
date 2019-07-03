@@ -4,6 +4,7 @@ syntax on
 colorscheme apprentice
 let g:vimroom_ctermbackground="none"
 set encoding=UTF-8
+set updatetime=100
 
 " install vimplug if not found
 if empty(glob('~/.vim/autoload/plug.vim'))
@@ -26,6 +27,7 @@ Plug 'klen/python-mode'
 Plug 'wakatime/vim-wakatime'
 Plug 'vim-airline/vim-airline'
 Plug 'ryanoasis/vim-devicons'
+Plug 'airblade/vim-gitgutter'
 
 " Required. plugins available after.
 call plug#end()
