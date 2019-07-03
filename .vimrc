@@ -2,6 +2,9 @@ set nocompatible
 syntax on
 set encoding=UTF-8
 set updatetime=100
+set ts=2
+set sts=2
+set et "expand tabs to spaces
 
 " install vimplug if not found
 if empty(glob('~/.vim/autoload/plug.vim'))
@@ -26,10 +29,13 @@ Plug 'vim-airline/vim-airline'
 Plug 'ryanoasis/vim-devicons'
 Plug 'rafi/awesome-vim-colorschemes'
 Plug 'airblade/vim-gitgutter'
+Plug 'raimondi/delimitmate'
 
 " Required. plugins available after.
 call plug#end()
 colorscheme onedark 
+
+set undodir=~/.vim/undodir
 
 """" NerdTree
 map <C-n> :NERDTreeToggle<CR>
@@ -52,4 +58,7 @@ let g:pymode_options_colorcolumn = 0
 
 " keybinds
 nmap <F2> :TagbarToggle<CR>
+
+" switch by number
+:nnoremap <F5> :buffers<CR>:buffer<Space>
 
