@@ -1,8 +1,5 @@
 set nocompatible
 syntax on
-
-colorscheme apprentice
-let g:vimroom_ctermbackground="none"
 set encoding=UTF-8
 
 " install vimplug if not found
@@ -26,19 +23,11 @@ Plug 'klen/python-mode'
 Plug 'wakatime/vim-wakatime'
 Plug 'vim-airline/vim-airline'
 Plug 'ryanoasis/vim-devicons'
+Plug 'rafi/awesome-vim-colorschemes'
 
 " Required. plugins available after.
 call plug#end()
-
-" syntastic
-set statusline+=%#warningmsg#
-set statusline+=%{SyntasticStatuslineFlag()}
-set statusline+=%*
-
-let g:syntastic_always_populate_loc_list = 1
-let g:syntastic_auto_loc_list = 1
-let g:syntastic_check_on_open = 1
-let g:syntastic_check_on_wq = 0
+colorscheme onedark 
 
 """" NerdTree
 map <C-n> :NERDTreeToggle<CR>
