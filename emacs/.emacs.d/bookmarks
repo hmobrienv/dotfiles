@@ -3,13 +3,13 @@
 ;;; nevertheless, you probably don't want to edit it.
 ;;; -*- End Of Bookmark File Format Version Stamp -*-
 (("org-refile-last-stored"
- (filename . "~/Nextcloud/org/gtd.org")
- (front-context-string . "*** TODO Apartme")
- (rear-context-string . "      :PROJECT:\n")
- (position . 455))
+ (filename . "~/Documents/org/notes.org")
+ (front-context-string . "** Unemployment ")
+ (rear-context-string . "              |\n")
+ (position . 15616))
 ("org-capture-last-stored"
- (filename . "~/Nextcloud/org/projects.org")
- (front-context-string . "** TODO Testing\n")
- (rear-context-string . " log formatting\n")
- (position . 186))
+ (filename . "~/Documents/org/inbox.org")
+ (front-context-string . "* TODO Sign up f")
+ (rear-context-string . "inkedIn profile\n")
+ (position . 1354))
 )

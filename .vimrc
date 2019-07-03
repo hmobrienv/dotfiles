@@ -1,6 +1,7 @@
 set nocompatible
 syntax on
 set encoding=UTF-8
+set updatetime=100
 
 " install vimplug if not found
 if empty(glob('~/.vim/autoload/plug.vim'))
@@ -24,6 +25,7 @@ Plug 'wakatime/vim-wakatime'
 Plug 'vim-airline/vim-airline'
 Plug 'ryanoasis/vim-devicons'
 Plug 'rafi/awesome-vim-colorschemes'
+Plug 'airblade/vim-gitgutter'
 
 " Required. plugins available after.
 call plug#end()

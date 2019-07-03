@@ -1,1 +1,1 @@
-("~/Documents/Code/dotfiles/" "~/Documents/Code/rustbook/hello_cargo/")
+("~/Documents/Code/dotfiles/" "~/Documents/Code/ironplayground/" "~/Documents/Code/rustbook/rectangles/" "~/Documents/Code/rustbook/structs/" "~/Documents/Code/rustbook/ownership/" "~/Documents/Code/interviewprep/rust/" "~/Documents/Code/rustbook/hello_cargo/")
