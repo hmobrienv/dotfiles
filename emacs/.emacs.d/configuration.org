@@ -1,4 +1,7 @@
-#+TITLE: Emacs Configuration
+TITLE: Emacs Configuration
+#+BEGIN_SRC emacs-lisp
+	(setq org-src-window-setup 'current-window)
+#+END_SRC
 * Configure =use-package=
 	
 #+BEGIN_SRC emacs-lisp
@@ -39,6 +42,11 @@ Get path from shell
     (exec-path-from-shell-initialize))
 #+END_SRC
 
+* Keybinds
+** Spacemacs style binds
+#+BEGIN_SRC emacs-lisp
+
+#+END_SRC
 * Utility Functions
 #+BEGIN_SRC emacs-lisp
 	(defun hmov/revert-buffer-no-confirm ()
@@ -62,13 +70,15 @@ Get path from shell
 #+END_SRC
   
 * Display preferences
+Winner mode visual bell
 #+BEGIN_SRC emacs-lisp
 	(setq visible-bell 1)
+  (winner-mode 1)
 #+END_SRC
 
 #+BEGIN_SRC emacs-lisp
-  (setq split-height-threshold nil)
-	(setq split-width-threshold 0)
+	;(setq split-height-threshold nil)				
+	;(setq split-width-threshold 0)
 #+END_SRC
 ** Set up unicode
 #+BEGIN_SRC emacs-lisp
@@ -126,7 +136,7 @@ Get path from shell
 		:ensure t)
 
 	(projectile-mode +1)
-  (setq projectile-project-search-path '("~/Code"))
+  (setq projectile-project-search-path '("~/Documents/Code"))
 	(define-key projectile-mode-map (kbd "s-p") 'projectile-command-map)
 	(define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
 #+END_SRC
@@ -141,14 +151,16 @@ Get path from shell
 
 * Configure helm
 #+BEGIN_SRC emacs-lisp
-(use-package helm
-    :ensure t)
+	(use-package helm
+			:ensure t)
 
-(require 'helm-config)
-(helm-mode 1)
-(define-key global-map [remap find-file] 'helm-find-files)
-(define-key global-map [remap list-buffers] 'helm-buffers-list)
+	(require 'helm-config)
+	(helm-mode 1)
+	(define-key global-map [remap find-file] 'helm-find-files)
+	(define-key global-map [remap list-buffers] 'helm-buffers-list)
 
+	(use-package helm-ag
+		:ensure t)
 #+END_SRC
 
 * Configure dashboard
@@ -214,7 +226,7 @@ Get path from shell
  #+BEGIN_SRC emacs-lisp
 	 (use-package org-journal
 		 :custom
-		 (org-journal-dir "~/Documents/journal/")
+		 (org-journal-dir "~/Documents/org/journal/")
 		 :ensure t)
 	 (require 'org-journal)
 	 (global-set-key (kbd "C-c j") 'org-journal-new-entry)
@@ -225,20 +237,20 @@ Get path from shell
 			;; Position point on the journal's top-level heading so that org-capture
 			;; will add the new entry as a child entry.
 			;;(goto-char (point-min)))
-   (defun hmov/save-and-kill-org-journal ()
-      "Saves the buffer and kills the window when in org-journal-mode"
-      (interactive)
-      (save-buffer)
-      (kill-buffer-and-window))
-   (define-key org-journal-mode-map (kbd "C-x C-s") 'hmov/save-and-kill-org-journal)
+	 (defun hmov/save-and-kill-org-journal ()
+			"Saves the buffer and kills the window when in org-journal-mode"
+			(interactive)
+			(save-buffer)
+			(kill-buffer-and-window))
+	 (define-key org-journal-mode-map (kbd "C-x C-s") 'hmov/save-and-kill-org-journal)
 
  #+END_SRC
 
 ** Org Agenda 
 #+BEGIN_SRC emacs-lisp
-	(setq org-agenda-files (list "~/Documents/org/" 
-                               "~/Documents/journal/"))
-#+End_src
+	(setq org-agenda-files '("/Users/mobrien/Documents/org"
+													 "~/Documents/journal"))
+#+END_SRC
 
 Do not dim blocked tasks
 #+BEGIN_SRC emacs-lisp
@@ -250,14 +262,8 @@ Custom agenda command definitions
 	(setq org-agenda-custom-commands
 				'((" " "Agenda"
 					 ((agenda "")
+            (todo "NEXT")
 						(todo "TODO")
-						(tags-todo "REFILE")
-						(tags-todo "-CANCELLED/!"
-							((org-agenda-overriding-header "Projects")
-							 (org-agenda-skip-function 'bh/skip-non-projects)
-							 (org-tags-match-list-sublevels 'indented)
-							 (org-agenda-sorting-strategy
-							 '(category-keep))))
 					 ))
 					("w" "Work Agenda"
 						((agenda "" ((org-agenda-span 1)))
@@ -319,7 +325,7 @@ show parens
 	(setq org-inbox-file (org-file-path "inbox.org"))
 	(setq org-index-file (org-file-path "gtd.org"))
 	(setq org-archive-location
-	(concat (org-file-path "archive.org") "::* From %s"))
+	(concat (org-file-path "/archive/archive") "::* From %s"))
 
 #+END_SRC
 
@@ -440,6 +446,8 @@ Helper function to help define projects for agenda views
 		(when  (equal major-mode 'org-agenda-mode)
 			(org-agenda-redo))
 		(message "%s WAITING and SCHEDULED NEXT Tasks" (if bh/hide-scheduled-and-waiting-next-tasks "Hide" "Show")))
+               
+               
 
 	(defun bh/skip-stuck-projects ()
 		"Skip trees that are not stuck projects"
@@ -692,6 +700,7 @@ Hit =C-c i= to quickly open up my todo list.
 	 'org-babel-load-languages
 	 '((R . t)
 		 (emacs-lisp . t)
+		 (python . t)
 		 (haskell . nil)
 		 (ledger . t)         ;this is the important one for this tutorial
 		 (octave . t)))
@@ -733,26 +742,35 @@ clientSecret: 9SYR7hB0wqZRLT9rp7-AMmeD
 #+END_SRC
 
 ** Python Settings
+	 
+Elpy needs jedi, flake8, formatting, autopep8, yapf, and black packages
+[[https://github.com/jorgenschaefer/elpy][Elpy Github]]
+
 #+BEGIN_SRC emacs-lisp
 	(if (eq system-type 'windows-nt)
 			(setq python-shell-interpreter "~/Anaconda3/python.exe")
-		(setq python-shell-interpreter "/bin/python.exe")
+		(setq python-shell-interpreter "/usr/local/bin/python3")
 	)
 
-	(use-package anaconda-mode
-    :ensure t)
-  (add-hook 'python-mode-hook 'anaconda-mode)
-
+	(use-package elpy
+		:ensure t
+		:init
+		(elpy-enable))
 #+END_SRC
-
 ** Lisps
 #+BEGIN_SRC emacs-lisp
 	(setq lispy-mode-hooks '(lisp-mode-hook))
 #+END_SRC
 ** Rust Settings
 #+BEGIN_SRC emacs-lisp
-(use-package rust-mode
-  :ensure t)
+	(use-package rust-mode
+		:ensure t)
+
+	(use-package flycheck-rust
+		:ensure t)
+	(with-eval-after-load 'rust-mode
+		(add-hook 'flycheck-mode-hook #'flycheck-rust-setup))
+
 #+END_SRC
 * Backup Settings
 Place add backups in one directory and purge weekly
@@ -786,4 +804,21 @@ Place add backups in one directory and purge weekly
 
 #+END_SRC
 
+* Ace Window
+#+BEGIN_SRC emacs-lisp
+	(use-package ace-window
+		:ensure t
+		:init
+		(progn
+			(global-set-key [remap other-window] 'ace-window)
+			(custom-set-faces
+			 '(aw-leading-char-face
+				 ((t (:inherit ace-jump-face-foreground :height 3.0)))))
+			))
+#+END_SRC
+* Try Package
+#+BEGIN_SRC emacs-lisp
+	(use-package try
+		:ensure t)
+#+END_SRC
 
