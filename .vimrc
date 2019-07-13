@@ -156,9 +156,17 @@ Plug 'vim-airline/vim-airline'
 Plug 'ryanoasis/vim-devicons'
 Plug 'rafi/awesome-vim-colorschemes'
 Plug 'airblade/vim-gitgutter'
+Plug 'tpope/vim-surround'
 
 " run install script from plugin directory
-Plug 'valloric/youcompleteme'
+if has('nvim')
+  Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+else
+  Plug 'Shougo/deoplete.nvim'
+  Plug 'roxma/nvim-yarp'
+  Plug 'roxma/vim-hug-neovim-rpc'
+endif
+let g:deoplete#enable_at_startup = 1
 
 " Required. plugins available after.
 call plug#end()
@@ -231,3 +239,6 @@ if executable('rg')
   let g:ctrlp_use_caching = 0
 endif
 
+" toggle search highlighting
+set hlsearch!
+nnoremap <F3> :set hlsearch!<CR>
