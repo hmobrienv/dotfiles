@@ -1,9 +1,6 @@
 set nocompatible
-syntax on
 set encoding=UTF-8
 set updatetime=100
-filetype plugin on
-filetype indent on
 
 let mapleader = ","
 
@@ -19,9 +16,9 @@ set wildmode=longest:list,full
 " Ignore compiled files
 set wildignore=*.o,*~,*.pyc
 if has("win16") || has("win32")
-    set wildignore+=.git\*,.hg\*,.svn\*
+    set wildignore+=,.hg\*,.svn\*
 else
-    set wildignore+=*/.git/*,*/.hg/*,*/.svn/*,*/.DS_Store
+    set wildignore+=*/.hg/*,*/.svn/*,*/.DS_Store
 endif
 
 set ruler
@@ -156,7 +153,10 @@ Plug 'vim-airline/vim-airline'
 Plug 'ryanoasis/vim-devicons'
 Plug 'rafi/awesome-vim-colorschemes'
 Plug 'airblade/vim-gitgutter'
+Plug 'davidhalter/jedi-vim'
 Plug 'tpope/vim-surround'
+Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+Plug 'junegunn/fzf.vim'
 
 " run install script from plugin directory
 if has('nvim')
@@ -193,6 +193,9 @@ let g:rustfmt_autosave = 1
 
 " python
 let g:pymode_options_colorcolumn = 0
+let g:pymode_rope_lookup_project = 0
+let g:pymode_rope_completion = 0
+let g:pymode_rope = 0
 
 " keybinds
 nmap <F2> :TagbarToggle<CR>
