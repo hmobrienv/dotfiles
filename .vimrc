@@ -1,6 +1,7 @@
 set nocompatible
 set encoding=UTF-8
 set updatetime=100
+syntax on
 
 let mapleader = ","
 
@@ -146,8 +147,9 @@ Plug 'rust-lang/rust.vim'
 Plug 'majutsushi/tagbar'
 Plug 'w0rp/ale'
 Plug 'scrooloose/nerdtree'
+Plug 'scrooloose/nerdcommenter'
 Plug 'ctrlpvim/ctrlp.vim'
-Plug 'klen/python-mode'
+Plug 'python-mode/python-mode', { 'for': 'python', 'branch': 'develop' }
 Plug 'wakatime/vim-wakatime'
 Plug 'vim-airline/vim-airline'
 Plug 'ryanoasis/vim-devicons'
@@ -157,6 +159,7 @@ Plug 'davidhalter/jedi-vim'
 Plug 'tpope/vim-surround'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
+Plug 'sheerun/vim-polyglot'
 
 " run install script from plugin directory
 if has('nvim')
@@ -171,6 +174,7 @@ let g:deoplete#enable_at_startup = 1
 " Required. plugins available after.
 call plug#end()
 colorscheme onedark 
+
 
 set undodir=~/.vim/undodir
 set undofile
@@ -192,6 +196,7 @@ let g:ctrlp_cmd = 'CtrlP'
 let g:rustfmt_autosave = 1
 
 " python
+let g:python_highlight_all = 1 
 let g:pymode_options_colorcolumn = 0
 let g:pymode_rope_lookup_project = 0
 let g:pymode_rope_completion = 0
