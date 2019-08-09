@@ -1,9 +1,19 @@
+" QOL Changes {{{
 set nocompatible
 set encoding=UTF-8
 set updatetime=100
 syntax on
 
 let mapleader = ","
+
+" toggle search highlighting
+set hlsearch!
+nnoremap <F3> :set hlsearch!<CR>
+
+" When you press <leader>r you can search and replace the selected text
+vnoremap <silent> <leader>r :call VisualSelection('replace', '')<CR>
+
+set modelines=1
 
 " Fast saving
 nmap <leader>w :w!<cr>
@@ -32,13 +42,12 @@ set ffs=unix,dos,mac
 set nobackup
 set nowb
 set noswapfile
+" }}}
 
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => Text, tab and indent related
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Text, tab and indent related {{{
 " Use spaces instead of tabs
+"
 set expandtab
-
 " Be smart when using tabs ;)
 set smarttab
 
@@ -57,11 +66,9 @@ set wrap "Wrap lines
 " Configure backspace so it acts as it should act
 set backspace=eol,start,indent
 set whichwrap+=<,>,h,l
+" }}}
 
-
-""""""""""""""""""""""""""""""""""""""""""
-" => Moving around, tabs, windows and buffers
-"""""""""""""""""""""""""""""""""""""""""""
+" Moving around, tabs, windows and buffers {{{
 " Map <Space> to / (search) and Ctrl-<Space> to ? (backwards search)
 map <space> /
 map <c-space> ?
@@ -112,17 +119,17 @@ endtry
 " Return to last edit position when opening files (You want this!)
 au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
 
-""""""""""""""""""""
-" => Visual mode related
-"""""""""""""""""""""
+" }}}
+
+" Visual mode related {{{
 " Visual mode pressing * or # searches for the current selection
 " Super useful! From an idea by Michael Naumann
 vnoremap <silent> * :<C-u>call VisualSelection('', '')<CR>/<C-R>=@/<CR><CR>
 vnoremap <silent> # :<C-u>call VisualSelection('', '')<CR>?<C-R>=@/<CR><CR>
 
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => Editing mappings
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" }}}
+
+" Editing mappings {{{
 " Remap VIM 0 to first non-blank character
 map 0 ^
 
@@ -131,7 +138,9 @@ nmap <M-j> mz:m+<cr>`z
 nmap <M-k> mz:m-2<cr>`z
 vmap <M-j> :m'>+<cr>`<my`>mzgv`yo`z
 vmap <M-k> :m'<-2<cr>`>my`<mzgv`yo`z
+" }}}
 
+" vim-plug {{{
 " install vimplug if not found
 if empty(glob('~/.vim/autoload/plug.vim'))
   silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
@@ -141,25 +150,25 @@ endif
 call plug#begin('~/.vim/plugged')
 
 " Let Vundle manage itself
-Plug 'tpope/vim-fugitive'
-Plug 'christoomey/vim-tmux-navigator'
-Plug 'rust-lang/rust.vim' 
-Plug 'majutsushi/tagbar'
-Plug 'w0rp/ale'
-Plug 'scrooloose/nerdtree'
-Plug 'scrooloose/nerdcommenter'
-Plug 'ctrlpvim/ctrlp.vim'
-Plug 'python-mode/python-mode', { 'for': 'python', 'branch': 'develop' }
-Plug 'wakatime/vim-wakatime'
-Plug 'vim-airline/vim-airline'
-Plug 'ryanoasis/vim-devicons'
-Plug 'rafi/awesome-vim-colorschemes'
 Plug 'airblade/vim-gitgutter'
+Plug 'christoomey/vim-tmux-navigator'
+Plug 'ctrlpvim/ctrlp.vim'
 Plug 'davidhalter/jedi-vim'
-Plug 'tpope/vim-surround'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
+Plug 'majutsushi/tagbar'
+Plug 'python-mode/python-mode', { 'for': 'python', 'branch': 'develop' }
+Plug 'rafi/awesome-vim-colorschemes'
+Plug 'rust-lang/rust.vim' 
+Plug 'ryanoasis/vim-devicons'
+Plug 'scrooloose/nerdcommenter'
+Plug 'scrooloose/nerdtree'
 Plug 'sheerun/vim-polyglot'
+Plug 'tpope/vim-fugitive'
+Plug 'tpope/vim-surround'
+Plug 'vim-airline/vim-airline'
+Plug 'w0rp/ale'
+Plug 'wakatime/vim-wakatime'
 
 " run install script from plugin directory
 if has('nvim')
@@ -173,7 +182,16 @@ let g:deoplete#enable_at_startup = 1
 
 " Required. plugins available after.
 call plug#end()
-colorscheme onedark 
+" }}}
+
+" Plugin Config {{{
+"
+" ripgrep for CtrlP
+if executable('rg')
+  set grepprg=rg\ --color=never
+  let g:ctrlp_user_command = 'rg %s --files --color=never --glob ""'
+  let g:ctrlp_use_caching = 0
+endif
 
 
 set undodir=~/.vim/undodir
@@ -191,7 +209,9 @@ let g:NERDTreeWinSize=40
 let g:ctrlp_map = '<c-p>'
 let g:ctrlp_cmd = 'CtrlP'
 
-"""""""" Language Settings 
+" }}}
+
+" Language Settings {{{ 
 " rust
 let g:rustfmt_autosave = 1
 
@@ -215,11 +235,9 @@ nmap <F2> :TagbarToggle<CR>
 if exists('g:loaded_webdevicons')
     call webdevicons#refresh()
 endif
+" }}}
 
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => Parenthesis/bracket
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Parenthesis/bracket {{{
 vnoremap $1 <esc>`>a)<esc>`<i(<esc>
 vnoremap $2 <esc>`>a]<esc>`<i[<esc>
 vnoremap $3 <esc>`>a}<esc>`<i{<esc>
@@ -234,19 +252,7 @@ inoremap $3 {}<esc>i
 inoremap $4 {<esc>o}<esc>O
 inoremap $q ''<esc>i
 inoremap $e ""<esc>i
+" }}}
 
-
-" When you press <leader>r you can search and replace the selected text
-vnoremap <silent> <leader>r :call VisualSelection('replace', '')<CR>
-
-
-" ripgrep for CtrlP
-if executable('rg')
-  set grepprg=rg\ --color=never
-  let g:ctrlp_user_command = 'rg %s --files --color=never --glob ""'
-  let g:ctrlp_use_caching = 0
-endif
-
-" toggle search highlighting
-set hlsearch!
-nnoremap <F3> :set hlsearch!<CR>
+colorscheme gruvbox 
+" vim:foldmethod=marker:foldlevel=0
