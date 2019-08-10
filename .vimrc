@@ -46,6 +46,9 @@ set smarttab
 set shiftwidth=4
 set tabstop=4
 
+
+autocmd FileType javascript setlocal shiftwidth=2 softtabstop=2 expandtab
+
 " Linebreak on 500 characters
 set lbr
 set tw=500
