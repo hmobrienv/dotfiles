@@ -2,6 +2,7 @@
 set nocompatible
 set encoding=UTF-8
 set updatetime=100
+set mouse=a
 syntax on
 
 let mapleader = ","
@@ -17,6 +18,10 @@ set modelines=1
 
 " Fast saving
 nmap <leader>w :w!<cr>
+
+" fast vimrc
+nmap <leader>vimrc :tabe ~/.vimrc<cr>
+autocmd bufwritepost .vimrc source $MYVIMRC<cr>
 
 " set 7 lines to the cursor - when moving vertically with j/k
 set so=7
@@ -157,7 +162,7 @@ Plug 'davidhalter/jedi-vim'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
 Plug 'majutsushi/tagbar'
-Plug 'python-mode/python-mode', { 'for': 'python', 'branch': 'develop' }
+"Plug 'python-mode/python-mode', { 'for': 'python', 'branch': 'develop' }
 Plug 'rafi/awesome-vim-colorschemes'
 Plug 'rust-lang/rust.vim' 
 Plug 'ryanoasis/vim-devicons'
@@ -167,7 +172,7 @@ Plug 'sheerun/vim-polyglot'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-surround'
 Plug 'vim-airline/vim-airline'
-Plug 'w0rp/ale'
+Plug 'dense-analysis/ale'
 Plug 'wakatime/vim-wakatime'
 
 " run install script from plugin directory
@@ -202,6 +207,7 @@ map <C-n> :NERDTreeToggle<CR>
 
 " auto close if nerdtree is only one open 
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
+let NERDTreeIgnore = ['\.pyc$']
 
 let g:NERDTreeWinSize=40
 
@@ -218,9 +224,11 @@ let g:rustfmt_autosave = 1
 " python
 let g:python_highlight_all = 1 
 let g:pymode_options_colorcolumn = 0
-let g:pymode_rope_lookup_project = 0
-let g:pymode_rope_completion = 0
-let g:pymode_rope = 0
+let g:pymode_rope_lookup_project = 1
+let g:pymode_rope_completion = 1
+let g:pymode_rope_regenerate_on_write = 0
+let g:pymode_rope = 1
+let g:pymode_trim_whitespaces = 1
 
 " keybinds
 nmap <F2> :TagbarToggle<CR>
