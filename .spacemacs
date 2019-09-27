@@ -384,8 +384,8 @@ you should place your code here."
                   ("NEXT" ("WAITING") ("CANCELLED") ("HOLD"))
                   ("DONE" ("WAITING") ("CANCELLED") ("HOLD")))))
 
-    (setq org-agenda-files '(concat org-directory "~/org"))
-    (setq org-journal-dir (concat org-directory "~/org/journal/"))
+    (setq org-agenda-files (list org-directory))
+    (setq org-journal-dir (concat org-directory "journal/"))
 
     (defun org-file-path (filename)
       (concat (file-name-as-directory org-directory) filename))
