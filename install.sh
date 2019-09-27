@@ -35,4 +35,11 @@ else
     echo "Spacemacs already linked"
 fi
 
+if [ ! -d "$HOME/org" ]; then
+    ln -s "$HOME/Library/Mobile Documents/iCloud~com~appsonthemove~beorg/Documents/org" $HOME/org
+else
+    echo "Org directory exists"
+fi
+
+
 
