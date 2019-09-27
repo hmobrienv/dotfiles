@@ -170,7 +170,7 @@ Plug 'sheerun/vim-polyglot'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-surround'
 Plug 'vim-airline/vim-airline'
-Plug 'w0rp/ale'
+Plug 'dense-analysis/ale'
 Plug 'wakatime/vim-wakatime'
 
 " run install script from plugin directory
@@ -215,6 +215,10 @@ let g:ctrlp_cmd = 'CtrlP'
 " }}}
 
 " Language Settings {{{ 
+" Markdown
+
+au BufRead,BufNewFile *.md setlocal textwidth=80
+
 " rust
 let g:rustfmt_autosave = 1
 
