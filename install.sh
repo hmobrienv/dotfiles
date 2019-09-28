@@ -24,15 +24,13 @@ else
     echo "tmux plugins already installed"
 fi
 
+
 if [ ! -L "$HOME/.emacs.d" ]; then
     echo "Linking emacs directory"
-    ln -s $SRC_DIR/dotfiles/spacemacs $HOME/.emacs.d
-    ln -s $SRC_DIR/dotfiles/.spacemacs $HOME/.spacemacs
-    
-    echo "Checking out development branch"
-    (cd $HOME/.emacs.d && git checkout develop)
+    ln -s $SRC_DIR/dotfiles/doom-emacs $HOME/.emacs.d
+    ln -s $SRC_DIR/dotfiles/.doom.d $HOME/.doom.d
 else
-    echo "Spacemacs already linked"
+    echo "Doom emacs already linked"
 fi
 
 if [ ! -d "$HOME/org" ]; then
@@ -40,6 +38,4 @@ if [ ! -d "$HOME/org" ]; then
 else
     echo "Org directory exists"
 fi
-
-
 

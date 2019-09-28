@@ -1,3 +1,6 @@
 [submodule "spacemacs"]
 	path = spacemacs
 	url = https://github.com/syl20bnr/spacemacs
+[submodule "doom-emacs"]
+	path = doom-emacs
+	url = https://github.com/hlissner/doom-emacs
