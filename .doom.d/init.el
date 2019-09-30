@@ -14,7 +14,7 @@
 
        :completion
        company           ; the ultimate code completion backend
-       ;;helm              ; the *other* search engine for love and life
+       helm              ; the *other* search engine for love and life
        ;;ido               ; the other *other* search engine...
        ivy               ; a search engine for love and life
 
@@ -183,11 +183,43 @@
   (defun org-file-path (filename)
     (concat (file-name-as-directory org-directory) filename))
 
+  (setq org-inbox-file        (org-file-path "inbox.org"))
+  (setq org-index-file        (org-file-path "gtd.org"))
+  (setq org-notes-refile      (org-file-path "notes-refile.org"))
+  (setq org-journal-file      (org-file-path "journal.org"))
 
-  (setq org-inbox-file (org-file-path "inbox.org"))
-  (setq org-index-file (org-file-path "gtd.org"))
+  (setq org-capture-templates
+          '(("n" "Notes"
+             entry
+             (file org-notes-refile)
+             "* %?\n")
+
+            ("j" "Journal"
+             entry
+             (file org-journal-file)
+             "* %?\nEntered on %U\n  %i\n  %a")
+
+            ("t" "Todo"
+             entry
+             (file org-inbox-file)
+             "* TODO %?\n")
+            ))
+
+
   (setq org-agenda-files '("~/org")))
 
-;; Python Setup
-(after! python
-  (global-flycheck-mode))
+
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(mouse-wheel-progressive-speed nil)
+ '(mouse-wheel-scroll-amount (quote (1 ((shift) . 5) ((control)))))
+ '(wakatime-api-key "4d4ab13d-5c0e-460f-8efe-4b6b4abd2982"))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
