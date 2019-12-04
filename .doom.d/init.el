@@ -177,37 +177,6 @@
        (default +bindings +smartparens))
 
 
-;; Org Setup
-(after! org
-  (setq org-directory "~/org")
-  (defun org-file-path (filename)
-    (concat (file-name-as-directory org-directory) filename))
-
-  (setq org-inbox-file        (org-file-path "inbox.org"))
-  (setq org-index-file        (org-file-path "gtd.org"))
-  (setq org-notes-refile      (org-file-path "notes-refile.org"))
-  (setq org-journal-file      (org-file-path "journal.org"))
-
-  (setq org-capture-templates
-          '(("n" "Notes"
-             entry
-             (file org-notes-refile)
-             "* %?\n")
-
-            ("j" "Journal"
-             entry
-             (file org-journal-file)
-             "* %?\nEntered on %U\n  %i\n  %a")
-
-            ("t" "Todo"
-             entry
-             (file org-inbox-file)
-             "* TODO %?\n")
-            ))
-
-
-  (setq org-agenda-files '("~/org")))
-
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
