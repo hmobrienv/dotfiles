@@ -1,6 +1,12 @@
 ;;; .doom.d/config.el -*- lexical-binding: t; -*-
 ;; Place your private configuration here
 ;;
+;; ox-hugo
+(def-package! ox-hugo
+  :config
+  (setq org-hugo-export-with-section-numbers nil)
+  :after ox)
+
 ;; Org Setup
 (after! org
   (setq org-directory "~/org")
