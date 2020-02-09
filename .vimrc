@@ -1,12 +1,27 @@
+" QOL Changes {{{
 set nocompatible
 set encoding=UTF-8
 set updatetime=100
+set mouse=a
 syntax on
 
 let mapleader = ","
 
+" toggle search highlighting
+set hlsearch!
+nnoremap <F3> :set hlsearch!<CR>
+
+" When you press <leader>r you can search and replace the selected text
+vnoremap <silent> <leader>r :call VisualSelection('replace', '')<CR>
+
+set modelines=1
+
 " Fast saving
 nmap <leader>w :w!<cr>
+
+" fast vimrc
+nmap <leader>vimrc :tabe ~/.vimrc<cr>
+autocmd bufwritepost .vimrc source $MYVIMRC<cr>
 
 " set 7 lines to the cursor - when moving vertically with j/k
 set so=7
@@ -32,19 +47,21 @@ set ffs=unix,dos,mac
 set nobackup
 set nowb
 set noswapfile
+" }}}
 
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => Text, tab and indent related
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Text, tab and indent related {{{
 " Use spaces instead of tabs
+"
 set expandtab
-
 " Be smart when using tabs ;)
 set smarttab
 
 " 1 tab == 4 spaces
 set shiftwidth=4
 set tabstop=4
+
+
+autocmd FileType javascript setlocal shiftwidth=2 softtabstop=2 expandtab
 
 " Linebreak on 500 characters
 set lbr
@@ -57,11 +74,9 @@ set wrap "Wrap lines
 " Configure backspace so it acts as it should act
 set backspace=eol,start,indent
 set whichwrap+=<,>,h,l
+" }}}
 
-
-""""""""""""""""""""""""""""""""""""""""""
-" => Moving around, tabs, windows and buffers
-"""""""""""""""""""""""""""""""""""""""""""
+" Moving around, tabs, windows and buffers {{{
 " Map <Space> to / (search) and Ctrl-<Space> to ? (backwards search)
 map <space> /
 map <c-space> ?
@@ -112,17 +127,17 @@ endtry
 " Return to last edit position when opening files (You want this!)
 au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
 
-""""""""""""""""""""
-" => Visual mode related
-"""""""""""""""""""""
+" }}}
+
+" Visual mode related {{{
 " Visual mode pressing * or # searches for the current selection
 " Super useful! From an idea by Michael Naumann
 vnoremap <silent> * :<C-u>call VisualSelection('', '')<CR>/<C-R>=@/<CR><CR>
 vnoremap <silent> # :<C-u>call VisualSelection('', '')<CR>?<C-R>=@/<CR><CR>
 
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => Editing mappings
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" }}}
+
+" Editing mappings {{{
 " Remap VIM 0 to first non-blank character
 map 0 ^
 
@@ -131,7 +146,9 @@ nmap <M-j> mz:m+<cr>`z
 nmap <M-k> mz:m-2<cr>`z
 vmap <M-j> :m'>+<cr>`<my`>mzgv`yo`z
 vmap <M-k> :m'<-2<cr>`>my`<mzgv`yo`z
+" }}}
 
+" vim-plug {{{
 " install vimplug if not found
 if empty(glob('~/.vim/autoload/plug.vim'))
   silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
@@ -158,7 +175,7 @@ Plug 'sheerun/vim-polyglot'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-surround'
 Plug 'vim-airline/vim-airline'
-Plug 'w0rp/ale'
+Plug 'dense-analysis/ale'
 Plug 'wakatime/vim-wakatime'
 
 " run install script from plugin directory
@@ -173,7 +190,16 @@ let g:deoplete#enable_at_startup = 1
 
 " Required. plugins available after.
 call plug#end()
-colorscheme onedark 
+" }}}
+
+" Plugin Config {{{
+"
+" ripgrep for CtrlP
+if executable('rg')
+  set grepprg=rg\ --color=never
+  let g:ctrlp_user_command = 'rg %s --files --color=never --glob ""'
+  let g:ctrlp_use_caching = 0
+endif
 
 
 set undodir=~/.vim/undodir
@@ -184,6 +210,7 @@ map <C-n> :NERDTreeToggle<CR>
 
 " auto close if nerdtree is only one open 
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
+let NERDTreeIgnore = ['\.pyc$']
 
 let g:NERDTreeWinSize=40
 
@@ -191,16 +218,24 @@ let g:NERDTreeWinSize=40
 let g:ctrlp_map = '<c-p>'
 let g:ctrlp_cmd = 'CtrlP'
 
-"""""""" Language Settings 
+" }}}
+
+" Language Settings {{{ 
+" Markdown
+
+au BufRead,BufNewFile *.md setlocal textwidth=80
+
 " rust
 let g:rustfmt_autosave = 1
 
 " python
 let g:python_highlight_all = 1 
 let g:pymode_options_colorcolumn = 0
-let g:pymode_rope_lookup_project = 0
-let g:pymode_rope_completion = 0
-let g:pymode_rope = 0
+let g:pymode_rope_lookup_project = 1
+let g:pymode_rope_completion = 1
+let g:pymode_rope_regenerate_on_write = 0
+let g:pymode_rope = 1
+let g:pymode_trim_whitespaces = 1
 
 " keybinds
 nmap <F2> :TagbarToggle<CR>
@@ -215,11 +250,9 @@ nmap <F2> :TagbarToggle<CR>
 if exists('g:loaded_webdevicons')
     call webdevicons#refresh()
 endif
+" }}}
 
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => Parenthesis/bracket
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Parenthesis/bracket {{{
 vnoremap $1 <esc>`>a)<esc>`<i(<esc>
 vnoremap $2 <esc>`>a]<esc>`<i[<esc>
 vnoremap $3 <esc>`>a}<esc>`<i{<esc>
@@ -234,19 +267,7 @@ inoremap $3 {}<esc>i
 inoremap $4 {<esc>o}<esc>O
 inoremap $q ''<esc>i
 inoremap $e ""<esc>i
+" }}}
 
-
-" When you press <leader>r you can search and replace the selected text
-vnoremap <silent> <leader>r :call VisualSelection('replace', '')<CR>
-
-
-" ripgrep for CtrlP
-if executable('rg')
-  set grepprg=rg\ --color=never
-  let g:ctrlp_user_command = 'rg %s --files --color=never --glob ""'
-  let g:ctrlp_use_caching = 0
-endif
-
-" toggle search highlighting
-set hlsearch!
-nnoremap <F3> :set hlsearch!<CR>
+colorscheme gruvbox 
+" vim:foldmethod=marker:foldlevel=0
