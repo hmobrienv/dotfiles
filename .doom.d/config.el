@@ -1,6 +1,9 @@
 ;;; .doom.d/config.el -*- lexical-binding: t; -*-
 ;; Place your private configuration here
 
+;; org-jira
+(setq jiralib-url "https://jira.vectra.io")
+
 ;; Default window size
 (if (display-graphic-p)
     (progn
@@ -75,9 +78,13 @@
         ("w" "Work Agenda"
          ((agenda ""
                   ((org-agenda-span 7)
-                   (org-agenda-overriding-header )))
-
-          (tags-todo "+@work")
+                   (org-agenda-tag-filter-preset '("+@work"))))
+          (tags-todo "+REFILE-LEVEL=2"
+               ((org-agenda-overriding-header "To Refile")))
+          (todo "NEXT"
+               ((org-agenda-overriding-header "Current Tasks")))
+          (tags-todo "+@work-NEXT"
+               ((org-agenda-overriding-header "Next")))
           ))
         ))
 
@@ -168,5 +175,10 @@
           (lambda ()
             (add-hook 'auto-save-hook 'org-save-all-org-buffers nil t)
             (auto-save-mode)))
+
+  (defun save-all ()
+    (interactive)
+    (save-some-buffers t))
+  (add-hook 'focus-out-hook 'save-all)
 
   (setq org-agenda-files '("~/org")))

@@ -7,3 +7,6 @@
 ;; (package! builtin-package :disable t)
 (package! ox-hugo)
 (package! groovy-mode)
+(package! org-jira)
+(package! restclient)
+(package! wakatime-mode)
