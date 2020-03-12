@@ -37,6 +37,13 @@
   (setq org-hugo-export-with-section-numbers nil)
   :after ox)
 
+(setq writeroom-width 150)
+
+;; setup org-protocol
+(server-start)
+(add-to-list 'load-path "~/.emacs.d/.local/straight/repos/org/lisp/org-protocol.el")
+(require 'org-protocol)
+
 ;; Org Setup
 (after! org
   (setq org-directory "~/org")
