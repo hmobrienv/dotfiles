@@ -165,7 +165,7 @@ Plug 'davidhalter/jedi-vim'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
 Plug 'majutsushi/tagbar'
-"Plug 'python-mode/python-mode', { 'for': 'python', 'branch': 'develop' }
+Plug 'python-mode/python-mode', { 'for': 'python', 'branch': 'develop' }
 Plug 'rafi/awesome-vim-colorschemes'
 Plug 'rust-lang/rust.vim' 
 Plug 'ryanoasis/vim-devicons'

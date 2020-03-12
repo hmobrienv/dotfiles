@@ -27,14 +27,13 @@ fi
 
 if [ ! -L "$HOME/.emacs.d" ]; then
     echo "Linking emacs directory"
-    ln -s $SRC_DIR/dotfiles/doom-emacs $HOME/.emacs.d
-    ln -s $SRC_DIR/dotfiles/.doom.d $HOME/.doom.d
+    ln -s $SRC_DIR/dotfiles/.doom.d $HOME/.emacs.d/.doom.d
 else
     echo "Doom emacs already linked"
 fi
 
 if [ ! -d "$HOME/org" ]; then
-    ln -s "$HOME/Library/Mobile Documents/iCloud~com~appsonthemove~beorg/Documents/org" $HOME/org
+    ln -s "$HOME/Dropbox/org" $HOME/org
 else
     echo "Org directory exists"
 fi

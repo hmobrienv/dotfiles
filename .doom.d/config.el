@@ -45,7 +45,7 @@
 
   (setq org-inbox-file        (org-file-path "inbox.org"))
   (setq org-index-file        (org-file-path "gtd.org"))
-  (setq org-notes-refile      (org-file-path "notes.org"))
+  (setq org-notes-refile      (org-file-path "notes-refile.org"))
   (setq org-journal-file      (org-file-path "journal.org"))
   (setq org-work-journal-file (org-file-path "work-journal.org"))
 
@@ -82,10 +82,8 @@
          ((agenda ""
                   ((org-agenda-span 7)
                    (org-agenda-tag-filter-preset '("+@work"))))
-          (tags-todo "+REFILE-LEVEL=2"
+          (tags-todo "+@work+REFILE-LEVEL=2"
                ((org-agenda-overriding-header "To Refile")))
-          (todo "NEXT"
-               ((org-agenda-overriding-header "Current Tasks")))
           (tags-todo "+@work-NEXT"
                ((org-agenda-overriding-header "Next")))
           ))
@@ -106,6 +104,11 @@
              entry
              (file org-work-journal-file)
              "* %T\n%?")
+
+            ("k" "Work Todo"
+             entry
+             (file org-inbox-file)
+             "* TODO %? :@work:\n")
 
             ("i" "Todo"
              entry
