@@ -4,6 +4,9 @@
 ;; org-jira
 (setq jiralib-url "https://jira.vectra.io")
 
+;; wakatime
+(global-wakatime-mode)
+
 ;; Default window size
 (if (display-graphic-p)
     (progn
