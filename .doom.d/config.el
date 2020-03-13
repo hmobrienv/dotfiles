@@ -4,6 +4,9 @@
 ;; org-jira
 (setq jiralib-url "https://jira.vectra.io")
 
+;; wakatime
+(global-wakatime-mode)
+
 ;; Default window size
 (if (display-graphic-p)
     (progn
@@ -33,6 +36,13 @@
   :config
   (setq org-hugo-export-with-section-numbers nil)
   :after ox)
+
+(setq writeroom-width 150)
+
+;; setup org-protocol
+(server-start)
+(add-to-list 'load-path "~/.emacs.d/.local/straight/repos/org/lisp/org-protocol.el")
+(require 'org-protocol)
 
 ;; Org Setup
 (after! org
