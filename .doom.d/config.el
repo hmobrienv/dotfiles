@@ -45,6 +45,7 @@
   (setq org-notes-refile      (org-file-path "notes-refile.org"))
   (setq org-journal-file      (org-file-path "journal.org"))
   (setq org-work-journal-file (org-file-path "work-journal.org"))
+  (setq org-links-file        (org-file-path "links.org"))
 
   (setq org-todo-keywords
       '((sequence "TODO(t)" "NEXT(n)" "|" "DONE(d)")
@@ -106,6 +107,15 @@
              entry
              (file org-inbox-file)
              "* TODO %? :@work:\n")
+
+	          ("p" "Protocol"
+             entry
+             (file org-links-file)
+             "* %^{Title}\nSource: %u, %c\n #+BEGIN_QUOTE\n%i\n#+END_QUOTE\n\n\n%?")
+            ("L" "Protocol Link"
+             entry
+             (file org-links-file)
+             "* %? [[%:link][%:description]] \nCaptured On: %U")
 
             ("i" "Todo"
              entry
