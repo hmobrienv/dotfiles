@@ -1,1 +1,4 @@
 
+[submodule "doom-emacs"]
+	path = doom-emacs
+	url = git@github.com:mikeyobrien/doom-emacs.git
