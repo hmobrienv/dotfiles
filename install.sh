@@ -24,12 +24,17 @@ else
     echo "tmux plugins already installed"
 fi
 
+if [ ! -L "$HOME/.doom.d" ]; then
+    echo "Linking emacs directory"
+    ln -s $SRC_DIR/dotfiles/.doom.d $HOME/.doom.d
+else
+    echo "Doom emacs config already linked"
+fi
 
 if [ ! -L "$HOME/.emacs.d" ]; then
-    echo "Linking emacs directory"
-    ln -s $SRC_DIR/dotfiles/.doom.d $HOME/.emacs.d/.doom.d
+    ln -s $SRC_DIR/doom-emacs/ $HOME/.emacs.d
 else
-    echo "Doom emacs already linked"
+    echo "Doom emacs already installed"
 fi
 
 if [ ! -d "$HOME/org" ]; then
