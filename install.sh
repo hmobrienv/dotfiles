@@ -1,4 +1,5 @@
 #!/bin/bash
+set -e
 
 export SRC_DIR=$(cd "$(dirname "$0")/.."; pwd)
 echo $SRC_DIR
@@ -32,7 +33,9 @@ else
 fi
 
 if [ ! -L "$HOME/.emacs.d" ]; then
-    ln -s $SRC_DIR/doom-emacs/ $HOME/.emacs.d
+    echo "Linking doom emacs to ~/.emacs.d"
+    ln -s $SRC_DIR/dotfiles/doom-emacs/ $HOME/.emacs.d
+    $HOME/.emacs.d/bin/doom install
 else
     echo "Doom emacs already installed"
 fi
