@@ -28,11 +28,25 @@
 (tool-bar-mode -1)
 
 
+;; fonts
+(setq doom-font (font-spec :family "Iosevka" :size 14)
+      doom-variable-pitch-font (font-spec :family "Libre Baskerville")
+      doom-serif-font (font-spec :family "Libre Baskerville"))
+
+
+;; flycheck
+(with-eval-after-load 'flycheck
+  (flycheck-add-mode 'proselint 'org-mode))
+
+
 ;; tramps
 (setq tramp-default-method "ssh")
 
 ;; writeroom
 (setq writeroom-width 150)
+
+;; evil mode
+(setq evil-want-fine-undo t)
 
 ;; setup org-protocol
 (server-start)
@@ -40,26 +54,25 @@
 (require 'org-protocol)
 
 (after! org
-;;   (setq org-directory "~/org")
-;;   (defun org-file-path (filename)
-;;     (concat (file-name-as-directory org-directory) filename))
+  (setq org-directory "~/org")
+  (defun org-file-path (filename)
+  (concat (file-name-as-directory org-directory) filename))
 
-;;   (setq org-inbox-file        (org-file-path "inbox.org"))
-;;   (setq org-index-file        (org-file-path "gtd.org"))
-;;   (setq org-notes-refile      (org-file-path "notes-refile.org"))
-;;   (setq org-journal-file      (org-file-path "journal.org"))
-;;   (setq org-work-journal-file (org-file-path "work-journal.org"))
+  (setq org-inbox-file        (org-file-path "inbox.org"))
+  (setq org-index-file        (org-file-path "gtd.org"))
+  (setq org-notes-refile      (org-file-path "notes-refile.org"))
+  (setq org-journal-file      (org-file-path "journal.org"))
+  (setq org-work-journal-file (org-file-path "work-journal.org"))
 
-;;   (setq org-todo-keywords
-;;       '((sequence "TODO(t)" "NEXT(n)" "|" "DONE(d)")
-;;         (sequence "WAITING(w@/!)" "HOLD(h@/!)" "|" "CANCELLED(c@/!)")))
+  (setq org-todo-keywords
+      '((sequence "TODO(t)" "NEXT(n)" "|" "DONE(d)")
+        (sequence "WAITING(w@/!)" "HOLD(h@/!)" "|" "CANCELLED(c@/!)")))
 
-;;   (setq org-agenda-start-day "+0d")
-;;   (setq org-agenda-start-with-log-mode t)
-;;   (defvar hmov/org-agenda-bulk-process-key ?f
-;;   "Default key for bulk processing inbox items.")
-;;   (setq org-agenda-bulk-custom-functions `((,hmov/org-agenda-bulk-process-key hmov/org-agenda-process-inbox-item)))
-
+  (setq org-agenda-start-day "+0d")
+  (setq org-agenda-start-with-log-mode t)
+  (defvar hmov/org-agenda-bulk-process-key ?f
+  "Default key for bulk processing inbox items.")
+  (setq org-agenda-bulk-custom-functions `((,hmov/org-agenda-bulk-process-key hmov/org-agenda-process-inbox-item)))
   (setq org-agenda-custom-commands
       '(("p" "Agenda"
          ((agenda ""
@@ -89,102 +102,89 @@
           ))
         ))
 
-;;   (setq org-capture-templates
-;;           '(("n" "Notes"
-;;              entry
-;;              (file org-notes-refile)
-;;              "* %?\n")
-
-;;             ("j" "Journal"
-;;              entry
-;;              (file org-journal-file)
-;;              "* %?\nEntered on %U\n  %i\n  %a")
-
-;;             ("w" "Work Journal"
-;;              entry
-;;              (file org-work-journal-file)
-;;              "* %T\n%?")
-
-;;             ("k" "Work Todo"
-;;              entry
-;;              (file org-inbox-file)
-;;              "* TODO %? :@work:\n")
-
-;;             ("i" "Todo"
-;;              entry
-;;              (file org-inbox-file)
-;;              "* TODO %?\n")
-;;             ))
-
   (setq org-tag-alist '(("@work" . ?w)
                           ("@home" . ?h)
                           ("@errand" . ?e)
                           ("@computer" . ?C)
                           ("@phone" . ?p)
                           ("SPRINT" . ?s)
-                          ("PROJECT" . ?P))))
+                          ("PROJECT" . ?P)))
 
-;;   (setq org-stuck-projects
-;;           '("+PROJECT+LEVEL=2/-DONE" ("NEXT") nil ""))
+  (setq org-stuck-projects
+          '("+PROJECT+LEVEL=2/-DONE" ("NEXT") nil ""))
 
-;;   (setq org-archive-location
-;;           (concat (org-file-path "/archive/archive") "::* From %s"))
+  (setq org-archive-location
+          (concat (org-file-path "/archive/archive") "::* From %s"))
 
-;;   (defun hmov/org-inbox-capture ()
-;;     (interactive)
-;;     "Capture a task in agenda mode."
-;;     (org-capture nil "i"))
+  (defun hmov/org-inbox-capture ()
+    (interactive)
+    "Capture a task in agenda mode."
+    (org-capture nil "i"))
 
-;;   (defun hmov/bulk-process-entries ()
-;;     (if (not (null org-agenda-bulk-marked-entries))
-;;         (let ((entries (reverse org-agenda-bulk-marked-entries))
-;;               (processed 0)
-;;               (skipped 0))
-;;           (dolist (e entries)
-;;             (let ((pos (text-property-any (point-min) (point-max) 'org-hd-marker e)))
-;;               (if (not pos)
-;;                   (progn (message "Skipping removed entry at %s" e)
-;;                          (cl-incf skipped))
-;;                 (goto-char pos)
-;;                 (let (org-loop-over-headlines-in-active-region) (funcall 'hmov/org-agenda-process-inbox-item))
-;;                 ;; `post-command-hook; is not run yet. We make sure any
-;;                 ;; pending log note is processed.
-;;                 (when (or (memq 'org-add-log-note (default-value 'post-command-hook))
-;;                           (memq 'org-add-log-note post-command-hook))
-;;                   (org-add-log-note))
-;;                 (cl-incf processed))))
-;;           (org-agenda-redo)
-;;           (unless org-agenda-persistent-marks (org-agenda-bulk-unmark-all))
-;;           (message "Acted on %d entries %s%s"
-;;                    processed
-;;                    (if (= skipped 0)
-;;                        ""
-;;                      (format ", skipped %d (disappeared before their turn)"
-;;                              skipped))
-;;                    (if (not org-agenda-persistant-marks) "" " (kept marked)")))))
+  (defun hmov/bulk-process-entries ()
+    (if (not (null org-agenda-bulk-marked-entries))
+        (let ((entries (reverse org-agenda-bulk-marked-entries))
+              (processed 0)
+              (skipped 0))
+          (dolist (e entries)
+            (let ((pos (text-property-any (point-min) (point-max) 'org-hd-marker e)))
+              (if (not pos)
+                  (progn (message "Skipping removed entry at %s" e)
+                         (cl-incf skipped))
+                (goto-char pos)
+                (let (org-loop-over-headlines-in-active-region) (funcall 'hmov/org-agenda-process-inbox-item))
+                ;; `post-command-hook; is not run yet. We make sure any
+                ;; pending log note is processed.
+                (when (or (memq 'org-add-log-note (default-value 'post-command-hook))
+                          (memq 'org-add-log-note post-command-hook))
+                  (org-add-log-note))
+                (cl-incf processed))))
+          (org-agenda-redo)
+          (unless org-agenda-persistent-marks (org-agenda-bulk-unmark-all))
+          (message "Acted on %d entries %s%s"
+                   processed
+                   (if (= skipped 0)
+                       ""
+                     (format ", skipped %d (disappeared before their turn)"
+                             skipped))
+                   (if (not org-agenda-persistant-marks) "" " (kept marked)")))))
 
 
-;;   (defun hmov/org-agenda-process-inbox-item ()
-;;     "Process a single item in the org-agenda."
-;;     (org-with-wide-buffer
-;;     (org-agenda-set-tags)
-;;     (org-agenda-priority)
-;;     (org-agenda-refile nil nil t)))
+  (defun hmov/org-agenda-process-inbox-item ()
+    "Process a single item in the org-agenda."
+    (org-with-wide-buffer
+    (org-agenda-set-tags)
+    (org-agenda-priority)
+    (org-agenda-refile nil nil t)))
 
-;;   (defun hmov/org-process-inbox ()
-;;     "called in org-agenda-mode, processes all inbox items"
-;;     (interactive)
-;;     (org-agenda-bulk-mark-regexp "inbox:")
-;;     (hmov/bulk-process-entries))
+  (defun hmov/org-process-inbox ()
+    "called in org-agenda-mode, processes all inbox items"
+    (interactive)
+    (org-agenda-bulk-mark-regexp "inbox:")
+    (hmov/bulk-process-entries))
 
-;;   (add-hook 'org-agenda-mode-hook
-;;           (lambda ()
-;;             (add-hook 'auto-save-hook 'org-save-all-org-buffers nil t)
-;;             (auto-save-mode)))
+  (add-hook 'org-agenda-mode-hook
+          (lambda ()
+            (add-hook 'auto-save-hook 'org-save-all-org-buffers nil t)
+            (auto-save-mode)))
 
-;;   (defun save-all ()
-;;     (interactive)
-;;     (save-some-buffers t))
-;;   (add-hook 'focus-out-hook 'save-all)
+  (defun save-all ()
+    (interactive)
+    (save-some-buffers t))
+  (add-hook 'focus-out-hook 'save-all)
 
-;;   (setq org-agenda-files '("~/org")))
+  (setq org-agenda-files '("~/org")))
+
+(use-package! org-roam
+  :commands (org-roam-insert org-roam-find-file org-roam)
+  :init
+  (setq org-roam-directory "~/org/braindump"
+        org-roam-db-location "~/org/org-roam.db")
+    (map! :leader
+        :prefix "n"
+        :desc "org-roam-insert" "i" #'org-roam-insert
+        :desc "org-roam-find"   "/" #'org-roam-find-file
+        :desc "org-roam-buffer" "r" #'org-roam
+        :desc "org-roam-capture" "c" #'org-roam-capture)
+  :config
+  (org-roam-mode +1))
