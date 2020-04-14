@@ -1,4 +1,5 @@
 #!/bin/bash
+set -e
 
 export SRC_DIR=$(cd "$(dirname "$0")/.."; pwd)
 echo $SRC_DIR
@@ -24,12 +25,19 @@ else
     echo "tmux plugins already installed"
 fi
 
+if [ ! -L "$HOME/.doom.d" ]; then
+    echo "Linking emacs directory"
+    ln -s $SRC_DIR/dotfiles/.doom.d $HOME/.doom.d
+else
+    echo "Doom emacs config already linked"
+fi
 
 if [ ! -L "$HOME/.emacs.d" ]; then
-    echo "Linking emacs directory"
-    ln -s $SRC_DIR/dotfiles/.doom.d $HOME/.emacs.d/.doom.d
+    echo "Linking doom emacs to ~/.emacs.d"
+    ln -s $SRC_DIR/dotfiles/doom-emacs/ $HOME/.emacs.d
+    $HOME/.emacs.d/bin/doom install
 else
-    echo "Doom emacs already linked"
+    echo "Doom emacs already installed"
 fi
 
 if [ ! -d "$HOME/org" ]; then
