@@ -1,13 +1,14 @@
 ;;; .doom.d/config.el -*- lexical-binding: t; -*-
 ;; Place your private configuration here
 
+
 ;; org-jira
 (setq jiralib-url "https://jira.vectra.io")
 
 ;; wakatime
 (global-wakatime-mode)
 
-;; Default window size
+;; Display
 (if (display-graphic-p)
     (progn
       (setq initial-frame-alist
@@ -26,13 +27,17 @@
     (setq initial-frame-alist'((tool-bar-lines . 0)))
     (setq default-frame-alist'((tool-bar-lines . 0)))))
 (tool-bar-mode -1)
+(scroll-bar-mode -1)
+;;(setq doom-theme 'dark+)
 
 
 ;; fonts
 (setq doom-font (font-spec :family "Iosevka" :size 14)
-      doom-variable-pitch-font (font-spec :family "Libre Baskerville")
-      doom-serif-font (font-spec :family "Libre Baskerville"))
+      doom-variable-pitch-font (font-spec :family "Input Mono")
+      doom-serif-font (font-spec :family "Input Mono"))
 
+;; treemacs
+;; (lsp-treemacs-sync-mode 1)
 
 ;; flycheck
 (with-eval-after-load 'flycheck
