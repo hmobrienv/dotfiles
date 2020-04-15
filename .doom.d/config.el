@@ -186,12 +186,38 @@
         :desc "org-roam-buffer" "r" #'org-roam
         :desc "org-roam-capture" "c" #'org-roam-capture)
   :config
-  (org-roam-mode +1))
+  (require 'org-roam-protocol)
+  (org-roam-mode +1)
+  (setq org-roam-capture-templates
+        '(("d" "default" plain (function org-roam--capture-get-point)
+           "%?"
+           :file-name "${slug}"
+           :head "#+SETUPFILE:./hugo_setup.org
+#+HUGO_SECTION: zettels
+#+HUGO_SLUG: ${slug}
+#+TITLE: ${title}\n"
+           :unnarrowed t)
+          ("p" "private" plain (function org-roam-capture--get-point)
+           "%?"
+           :file-name "private-${slug}"
+           :head "#+TITLE: ${title}\n"
+           :unnarrowed t)))
+  (setq org-roam-ref-capture-templates
+        '(("r" "ref" plain (function org-roam-capture--get-point)
+           "%?"
+           :file-name "websites/${slug}"
+           :head "#+SETUPFILE:./hugo_setup.org
+#+ROAM_KEY: ${ref}
+#+HUGO_SLUG: ${slug}
+#+TITLE: ${title}
+- source :: ${ref}"
+           :unnarrowed t))))
 
 (use-package org-journal
   :custom
   (org-journal-date-prefix "#+TITLE: ")
   (org-journal-file-format "%Y-%m-%d.org")
+  (org-journal-file-header "[[file:~/org/braindump/journaling.org][file:~/Dropbox/org/braindump/journaling.org]]")
   (org-journal-dir "~/org/braindump/")
   (org-journal-date-format "%A, %d %B %Y"))
 
