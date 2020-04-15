@@ -61,7 +61,6 @@
   (setq org-inbox-file        (org-file-path "inbox.org"))
   (setq org-index-file        (org-file-path "gtd.org"))
   (setq org-notes-refile      (org-file-path "notes-refile.org"))
-  (setq org-journal-file      (org-file-path "journal.org"))
   (setq org-work-journal-file (org-file-path "work-journal.org"))
 
   (setq org-todo-keywords
@@ -188,3 +187,29 @@
         :desc "org-roam-capture" "c" #'org-roam-capture)
   :config
   (org-roam-mode +1))
+
+(use-package org-journal
+  :custom
+  (org-journal-date-prefix "#+TITLE: ")
+  (org-journal-file-format "%Y-%m-%d.org")
+  (org-journal-dir "~/org/braindump/")
+  (org-journal-date-format "%A, %d %B %Y"))
+
+;; org roam export
+(defun my/org-roam--backlinks-list (file)
+  (if (org-roam--org-roam-file-p file)
+      (--reduce-from
+       (concat acc (format "- [[file:%s][%s]]\n"
+                           (file-relative-name (car it) org-roam-directory)
+                                 (org-roam--get-title-or-slug (car it))))
+       "" (org-roam-sql [:select [file-from] :from file-links :where (= file-to $s1)] file))
+    ""))
+
+(defun my/org-export-preprocessor (backend)
+  (let ((links (my/org-roam--backlinks-list (buffer-file-name))))
+    (unless (string= links "")
+      (save-excursion
+        (goto-char (point-max))
+        (insert (concat "\n* Backlinks\n") links)))))
+
+(add-hook 'org-export-before-processing-hook 'my/org-export-preprocessor)
