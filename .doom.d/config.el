@@ -1,13 +1,14 @@
 ;;; .doom.d/config.el -*- lexical-binding: t; -*-
 ;; Place your private configuration here
 
+
 ;; org-jira
 (setq jiralib-url "https://jira.vectra.io")
 
 ;; wakatime
 (global-wakatime-mode)
 
-;; Default window size
+;; Display
 (if (display-graphic-p)
     (progn
       (setq initial-frame-alist
@@ -26,34 +27,45 @@
     (setq initial-frame-alist'((tool-bar-lines . 0)))
     (setq default-frame-alist'((tool-bar-lines . 0)))))
 (tool-bar-mode -1)
+(scroll-bar-mode -1)
+;;(setq doom-theme 'dark+)
+
+
+;; fonts
+(setq doom-font (font-spec :family "Iosevka" :size 14)
+      doom-variable-pitch-font (font-spec :family "Input Mono")
+      doom-serif-font (font-spec :family "Input Mono"))
+
+;; treemacs
+;; (lsp-treemacs-sync-mode 1)
+
+;; flycheck
+(with-eval-after-load 'flycheck
+  (flycheck-add-mode 'proselint 'org-mode))
 
 
 ;; tramps
 (setq tramp-default-method "ssh")
 
-;; ox-hugo
-(def-package! ox-hugo
-  :config
-  (setq org-hugo-export-with-section-numbers nil)
-  :after ox)
-
+;; writeroom
 (setq writeroom-width 150)
+
+;; evil mode
+(setq evil-want-fine-undo t)
 
 ;; setup org-protocol
 (server-start)
 (add-to-list 'load-path "~/.emacs.d/.local/straight/repos/org/lisp/org-protocol.el")
 (require 'org-protocol)
 
-;; Org Setup
 (after! org
   (setq org-directory "~/org")
   (defun org-file-path (filename)
-    (concat (file-name-as-directory org-directory) filename))
+  (concat (file-name-as-directory org-directory) filename))
 
   (setq org-inbox-file        (org-file-path "inbox.org"))
   (setq org-index-file        (org-file-path "gtd.org"))
   (setq org-notes-refile      (org-file-path "notes-refile.org"))
-  (setq org-journal-file      (org-file-path "journal.org"))
   (setq org-work-journal-file (org-file-path "work-journal.org"))
   (setq org-links-file        (org-file-path "links.org"))
 
@@ -63,11 +75,9 @@
 
   (setq org-agenda-start-day "+0d")
   (setq org-agenda-start-with-log-mode t)
-
   (defvar hmov/org-agenda-bulk-process-key ?f
   "Default key for bulk processing inbox items.")
   (setq org-agenda-bulk-custom-functions `((,hmov/org-agenda-bulk-process-key hmov/org-agenda-process-inbox-item)))
-
   (setq org-agenda-custom-commands
       '(("p" "Agenda"
          ((agenda ""
@@ -205,3 +215,69 @@
   (add-hook 'focus-out-hook 'save-all)
 
   (setq org-agenda-files '("~/org")))
+
+(use-package! org-roam
+  :commands (org-roam-insert org-roam-find-file org-roam)
+  :init
+  (setq org-roam-directory "~/org/braindump"
+        org-roam-db-location "~/org/org-roam.db")
+    (map! :leader
+        :prefix "n"
+        :desc "org-roam-insert" "i" #'org-roam-insert
+        :desc "org-roam-find"   "/" #'org-roam-find-file
+        :desc "org-roam-buffer" "r" #'org-roam
+        :desc "org-roam-capture" "c" #'org-roam-capture)
+  :config
+  (require 'org-roam-protocol)
+  (org-roam-mode +1)
+  (setq org-roam-capture-templates
+        '(("d" "default" plain (function org-roam--capture-get-point)
+           "%?"
+           :file-name "${slug}"
+           :head "#+SETUPFILE:./hugo_setup.org
+#+HUGO_SECTION: zettels
+#+HUGO_SLUG: ${slug}
+#+TITLE: ${title}\n"
+           :unnarrowed t)
+          ("p" "private" plain (function org-roam-capture--get-point)
+           "%?"
+           :file-name "private-${slug}"
+           :head "#+TITLE: ${title}\n"
+           :unnarrowed t)))
+  (setq org-roam-ref-capture-templates
+        '(("r" "ref" plain (function org-roam-capture--get-point)
+           "%?"
+           :file-name "websites/${slug}"
+           :head "#+SETUPFILE:./hugo_setup.org
+#+ROAM_KEY: ${ref}
+#+HUGO_SLUG: ${slug}
+#+TITLE: ${title}
+- source :: ${ref}"
+           :unnarrowed t))))
+
+(use-package org-journal
+  :custom
+  (org-journal-date-prefix "#+TITLE: ")
+  (org-journal-file-format "%Y-%m-%d.org")
+  (org-journal-file-header "[[file:~/org/braindump/journaling.org][file:~/Dropbox/org/braindump/journaling.org]]")
+  (org-journal-dir "~/org/braindump/")
+  (org-journal-date-format "%A, %d %B %Y"))
+
+;; org roam export
+(defun my/org-roam--backlinks-list (file)
+  (if (org-roam--org-roam-file-p file)
+      (--reduce-from
+       (concat acc (format "- [[file:%s][%s]]\n"
+                           (file-relative-name (car it) org-roam-directory)
+                                 (org-roam--get-title-or-slug (car it))))
+       "" (org-roam-sql [:select [file-from] :from file-links :where (= file-to $s1)] file))
+    ""))
+
+(defun my/org-export-preprocessor (backend)
+  (let ((links (my/org-roam--backlinks-list (buffer-file-name))))
+    (unless (string= links "")
+      (save-excursion
+        (goto-char (point-max))
+        (insert (concat "\n* Backlinks\n") links)))))
+
+(add-hook 'org-export-before-processing-hook 'my/org-export-preprocessor)

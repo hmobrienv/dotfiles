@@ -10,3 +10,4 @@
 (package! org-jira)
 (package! restclient)
 (package! wakatime-mode)
+;;(package! lsp-treemacs)
