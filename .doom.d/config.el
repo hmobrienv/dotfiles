@@ -8,6 +8,12 @@
 ;; wakatime
 (global-wakatime-mode)
 
+;; python
+(use-package! lsp-python-ms
+  :hook (python-mode . (lambda ()
+                         (require 'lsp-python-ms)
+                         (lsp))))
+
 ;; Display
 (if (display-graphic-p)
     (progn
