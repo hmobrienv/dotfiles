@@ -281,3 +281,20 @@
         (insert (concat "\n* Backlinks\n") links)))))
 
 (add-hook 'org-export-before-processing-hook 'my/org-export-preprocessor)
+
+
+;; custom functions
+(defun me/bash-history ()
+  (interactive)
+  (let ((command (with-temp-buffer
+                   (insert-file-contents-literally "~/.bash_history")
+                   (let ((history-list (split-string (buffer-string) "\n" t)))
+                     (ivy-read "Command: " history-list)))))
+    (when command
+      (insert command))))
+
+
+(add-hook! 'eshell-first-time-mode-hook
+  (defun +eshell-add-history-h ()
+    (map! :map eshell-mode-map
+          "C-c r" #'me/bash-history)))
