@@ -14,6 +14,13 @@
                          (require 'lsp-python-ms)
                          (lsp))))
 
+(use-package! python-black
+  :init
+  (map! :localleader
+        :map python-mode-map
+        :desc "Blacken buffer" "b" #'python-black-buffer))
+
+
 ;; Display
 (if (display-graphic-p)
     (progn

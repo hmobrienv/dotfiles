@@ -10,4 +10,5 @@
 (package! restclient)
 (package! wakatime-mode)
 (package! lsp-python-ms)
+(package! python-black)
 ;;(package! lsp-treemacs)
