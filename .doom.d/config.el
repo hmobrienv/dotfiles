@@ -9,23 +9,7 @@
 (global-wakatime-mode)
 
 ;; Display
-(if (display-graphic-p)
-    (progn
-      (setq initial-frame-alist
-            '(
-              (width . 150)
-              (height . 80)
-              (left . 50)
-              (top . 50)))
-      (setq default-frame-alist
-            '(
-              (width . 150)
-              (height . 80)
-              (left . 50)
-              (top . 50))))
-  (progn
-    (setq initial-frame-alist'((tool-bar-lines . 0)))
-    (setq default-frame-alist'((tool-bar-lines . 0)))))
+
 (tool-bar-mode -1)
 (scroll-bar-mode -1)
 ;;(setq doom-theme 'dark+)
@@ -35,6 +19,9 @@
 (setq doom-font (font-spec :family "Iosevka" :size 14)
       doom-variable-pitch-font (font-spec :family "Input Mono")
       doom-serif-font (font-spec :family "Input Mono"))
+
+(if (string-equal (system-name) "devmachine")
+    (setq doom-font (font-spec :family "Iosevka" :size 18)))
 
 ;; treemacs
 ;; (lsp-treemacs-sync-mode 1)
@@ -48,7 +35,7 @@
 (setq tramp-default-method "ssh")
 
 ;; writeroom
-(setq writeroom-width 150)
+;;(setq writeroom-width 150)
 
 ;; evil mode
 (setq evil-want-fine-undo t)
