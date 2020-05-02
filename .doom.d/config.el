@@ -8,10 +8,18 @@
 ;; wakatime
 (global-wakatime-mode)
 
+;; python
+(use-package! lsp-python-ms
+  :hook (python-mode . (lambda ()
+                         (require 'lsp-python-ms)
+                         (lsp))))
+
 ;; Display
 
 (tool-bar-mode -1)
 (scroll-bar-mode -1)
+(delete-selection-mode 1)
+(global-subword-mode 1)
 ;;(setq doom-theme 'dark+)
 
 
