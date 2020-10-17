@@ -1,0 +1,52 @@
+Day-agenda (W24):
+Sunday     14 June 2020
+  Tasks:      In  14 d.:  TODO [#A] Balance YNAB budget
+  gtd:        In   4 d.:  TODO Upload throwback picture
+
+==================================================================================================================================================================================
+To Refile
+  inbox:      TODO Cancel credit card autopay                                                                                                                            :REFILE::
+
+==================================================================================================================================================================================
+Next Tasks
+
+==================================================================================================================================================================================
+Project Tasks
+  gtd:        TODO org mode improvements                                                                                                                                :PROJECT::
+  gtd:        TODO read more about doom emacs clocking workflow                                                                                                         :PROJECT::
+  gtd:        TODO Move-in to Red Stone                                                                                                                                 :PROJECT::
+  gtd:        TODO Pack storage closet                                                                                                                                  :PROJECT::
+  gtd:        TODO Clean & organize office for packing                                                                                                                  :PROJECT::
+  gtd:        TODO Order ring doorbell                                                                                                                                  :PROJECT::
+  gtd:        TODO Schedule internet setup                                                                                                                              :PROJECT::
+  gtd:        TODO Transfer money from Ally to USAA                                                                                                                     :PROJECT::
+  gtd:        TODO Upload updated transaction statements                                                                                                                :PROJECT::
+  gtd:        TODO Get garage epoxy quote from Greg                                                                                                                     :PROJECT::
+  gtd:        TODO Order & schedule fridge delivery                                                                                                                     :PROJECT::
+  gtd:        TODO Rent uhaul                                                                                                                                           :PROJECT::
+  gtd:        TODO Fix dishwasher not closing                                                                                                                           :PROJECT::
+  gtd:        TODO Store inspection documents & contracts on NAS                                                                                                        :PROJECT::
+  gtd:        TODO Setup utilities                                                                                                                                      :PROJECT::
+
+==================================================================================================================================================================================
+One-off Tasks
+  Tasks:      TODO [#B] run roomby                                                                                                                                         :@home:
+  Tasks:      TODO [#B] Migrate off dropbox                                                                                                                            :@computer:
+  Tasks:      TODO [#B] Move all files off arch                                                                                                                        :@computer:
+  Tasks:      TODO [#B] Reformat and fix disk layouts for windows and arch                                                                                       :@home:@computer:
+  todo:       TODO [#B] find fix for word wrap not working                                                                                                             :@computer:
+  Tasks:      TODO [#C] Write blogpost on VPN for octoclient                                                                                                               :@home:
+  Tasks:      TODO [#C] explore writing code to sync orgmode notes to a frontend.                                                                                          :@home:
+  Tasks:      TODO [#C] Organize Bitwarden                                                                                                                                 :@home:
+  Tasks:      TODO [#C] design work custom agenda                                                                                                                          :@work:
+  Tasks:      TODO [#C] Get nd filter for 35mm                                                                                                                         :@computer:
+  Tasks:      TODO [#C] Research shortcut to add link from safari on mobile                                                                                            :@computer:
+  Tasks:      TODO [#C] write custom agenda file for org-jira                                                                                                              :@work:
+  Tasks:      TODO [#C] write script to pull jira issues and refile my issues                                                                                              :@work:
+  Tasks:      TODO [#C] YNAB mode for org                                                                                                                                  :@home:
+  Tasks:      TODO [#C] setup effort estimates                                                                                                                     :@computer:org:
+  Tasks:      TODO [#C] sort so NEXT tasks are first                                                                                                                   :@computer:
+  Tasks:      TODO [#C] Add theme to hugo themes repo                                                                                                                  :@computer:
+  Tasks:      TODO [#C] elisp get OTP tool from nebula                                                                                                                 :@computer:
+  Tasks:      TODO [#C] Segment routes in serverless for better metrics                                                                                                    :@work:
+  Tasks:      TODO [#C] clojurescript framework for creating cli apps -- like click                                                                        :@computer:sideproject:

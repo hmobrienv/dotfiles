@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: jupyter-python
+# key: <jp
+# --
+#+BEGIN_SRC jupyter-python :session python3 :async yes
+`%`$1
+#+END_SRC

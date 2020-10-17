@@ -1,0 +1,60 @@
+Day-agenda (W21):
+Wednesday  20 May 2020
+  Tasks:      In 104 d.:  TODO [#A] Balance YNAB budget
+  Tasks:      Sched.68x:  TODO [#B] Push org changes                                                                                                                                                                              :@computer:
+  gtd:        55 d. ago:  TODO Upload throwback picture
+
+=============================================================================================================================================================================================================================================
+To Refile
+  inbox:      TODO Add serverless account credentials to passbolt                                                                                                                                                                   :REFILE::
+
+=============================================================================================================================================================================================================================================
+Next Tasks
+  gtd:        NEXT design a way to review notes and refile                                                                                                                                                                         :PROJECT::
+
+=============================================================================================================================================================================================================================================
+Project Tasks
+  gtd:        TODO org mode improvements                                                                                                                                                                                           :PROJECT::
+  gtd:        TODO read more about doom emacs clocking workflow                                                                                                                                                                    :PROJECT::
+  gtd:        TODO figure out issue where you can only refile once                                                                                                                                                                 :PROJECT::
+  gtd:        TODO Photography                                                                                                                                                                                                     :PROJECT::
+  gtd:        TODO Workstation                                                                                                                                                                                                     :PROJECT::
+  gtd:        TODO Knifes                                                                                                                                                                                                          :PROJECT::
+  gtd:        TODO Record Player                                                                                                                                                                                                   :PROJECT::
+
+=============================================================================================================================================================================================================================================
+One-off Tasks
+  Tasks:      TODO [#A] call back collections for google cloud account                                                                                                                                                               :@phone:
+  Tasks:      TODO [#A] unsubscribe from cleo                                                                                                                                                                                     :@computer:
+  Tasks:      TODO [#A] Reformat and fix disk layouts for windows and arch                                                                                                                                                  :@home:@computer:
+  Tasks:      TODO [#B] run roomby                                                                                                                                                                                                    :@home:
+  Tasks:      TODO [#B] Migrate off dropbox                                                                                                                                                                                       :@computer:
+  Tasks:      TODO [#B] Move all files off arch                                                                                                                                                                                   :@computer:
+  Tasks:      TODO [#B] figure out SLA workaround for S3                                                                                                                                                                              :@work:
+  todo:       TODO find fix for word wrap not working
+  todo:       TODO Test coverage                                                                                                                                                                                                       :WORK:
+  todo:       TODO change infrastructure to pass renamed client upload bucket                                                                                                                                                          :WORK:
+  todo:       TODO figure out why lsp-treemacs prevents lsp server connections
+  todo:       TODO Find out how to change venv by project
+  todo:       TODO Serverless framework emacs module
+  todo:       TODO Make orc capture nicer looking
+  Tasks:      TODO [#C] Write blogpost on VPN for octoclient                                                                                                                                                                          :@home:
+  Tasks:      TODO [#C] explore writing code to sync orgmode notes to a frontend.                                                                                                                                                     :@home:
+  Tasks:      TODO [#C] Order part for privacy divider in car                                                                                                                                                                         :@home:
+  Tasks:      TODO [#C] Organize Bitwarden                                                                                                                                                                                            :@home:
+  Tasks:      TODO [#C] design work custom agenda                                                                                                                                                                                     :@work:
+  Tasks:      TODO [#C] Get nd filter for 35mm                                                                                                                                                                                    :@computer:
+  Tasks:      TODO [#C] Set autosave and reload buffer on desktop                                                                                                                                                                 :@computer:
+  Tasks:      TODO [#C] Research shortcut to add link from safari on mobile                                                                                                                                                       :@computer:
+  Tasks:      TODO [#C] Watch tutorial on davinci resolve color grading                                                                                                                                                     :@home:@computer:
+  Tasks:      TODO [#C] Put rabbit emblem on                                                                                                                                                                                          :@home:
+  Tasks:      TODO [#C] write custom agenda file for org-jira                                                                                                                                                                         :@work:
+  Tasks:      TODO [#C] write script to pull jira issues and refile my issues                                                                                                                                                         :@work:
+  Tasks:      TODO [#C] Finish ox-hugo blog setup                                                                                                                                                                                     :@home:
+  Tasks:      TODO [#C] YNAB mode for org                                                                                                                                                                                             :@home:
+  Tasks:      TODO [#C] setup effort estimates                                                                                                                                                                                :@computer:org:
+  Tasks:      TODO [#C] sort so NEXT tasks are first                                                                                                                                                                              :@computer:
+  Tasks:      TODO [#C] Store https://mosermichael.github.io/jq-illustrated/dir/content.html                                                                                                                                      :@computer:
+  Tasks:      TODO [#C] Add poetry layer for emacs                                                                                                                                                                                :@computer:
+  Tasks:      TODO [#C] Figure out if syncthing should centralize on servy                                                                                                                                                        :@computer:
+  Tasks:      TODO [#C] Add theme to hugo themes repo                                                                                                                                                                             :@computer:

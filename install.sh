@@ -46,3 +46,22 @@ else
     echo "Org directory exists"
 fi
 
+if [ ! -L "$HOME/.yabairc" ]; then
+    echo "Linking .yabairc"
+    ln -s $SRC_DIR/dotfiles/.yabairc $HOME/.yabairc
+else
+    echo "yabairc already installed"
+fi
+
+if [ ! -L "$HOME/.skhdrc" ]; then
+    echo "Linking .skdhrc"
+    ln -s $SRC_DIR/dotfiles/.skhdrc $HOME/.skhdrc
+else
+    echo "skhdrc already installed"
+fi
+
+
+echo "Installing fish"
+rm -rf $HOME/.config/fish
+ln -s $SRC_DIR/dotfiles/fish $HOME/.config/fish
+echo "Installed fish. Run the following to complete setup.\n\t$ echo /usr/local/bin/fish | sudo tee -a /etc/shells\n\tchsh -s /usr/local/bin/fish"

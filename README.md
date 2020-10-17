@@ -2,7 +2,7 @@
 
 ## Installion 
 
-ln -s path/of/dotfile ~/.dotfile
+lsudo apt-get install fd-findn -s path/of/dotfile ~/.dotfile
 
 ## vim setup
 

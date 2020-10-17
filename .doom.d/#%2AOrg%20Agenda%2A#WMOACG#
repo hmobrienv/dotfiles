@@ -1,0 +1,45 @@
+Day-agenda (W24):
+Sunday     14 June 2020
+  Tasks:      In 232 d.:  TODO [#A] Balance YNAB budget
+  gtd:        80 d. ago:  TODO Upload throwback picture
+
+==================================================================================================================================================================================
+To Refile
+
+==================================================================================================================================================================================
+Next Tasks
+  gtd:        NEXT design a way to review notes and refile                                                                                                              :PROJECT::
+
+==================================================================================================================================================================================
+Project Tasks
+  gtd:        TODO org mode improvements                                                                                                                                :PROJECT::
+  gtd:        TODO read more about doom emacs clocking workflow                                                                                                         :PROJECT::
+  gtd:        TODO figure out issue where you can only refile once                                                                                                      :PROJECT::
+  gtd:        TODO Photography                                                                                                                                          :PROJECT::
+  gtd:        TODO Workstation                                                                                                                                          :PROJECT::
+  gtd:        TODO Knifes                                                                                                                                               :PROJECT::
+  gtd:        TODO Record Player                                                                                                                                        :PROJECT::
+
+==================================================================================================================================================================================
+One-off Tasks
+  Tasks:      TODO [#A] Reformat and fix disk layouts for windows and arch                                                                                       :@home:@computer:
+  Tasks:      TODO [#B] run roomby                                                                                                                                         :@home:
+  Tasks:      TODO [#B] Migrate off dropbox                                                                                                                            :@computer:
+  Tasks:      TODO [#B] Move all files off arch                                                                                                                        :@computer:
+  todo:       TODO find fix for word wrap not working
+  Tasks:      TODO [#C] Write blogpost on VPN for octoclient                                                                                                               :@home:
+  Tasks:      TODO [#C] explore writing code to sync orgmode notes to a frontend.                                                                                          :@home:
+  Tasks:      TODO [#C] Order part for privacy divider in car                                                                                                              :@home:
+  Tasks:      TODO [#C] Organize Bitwarden                                                                                                                                 :@home:
+  Tasks:      TODO [#C] design work custom agenda                                                                                                                          :@work:
+  Tasks:      TODO [#C] Get nd filter for 35mm                                                                                                                         :@computer:
+  Tasks:      TODO [#C] Research shortcut to add link from safari on mobile                                                                                            :@computer:
+  Tasks:      TODO [#C] write custom agenda file for org-jira                                                                                                              :@work:
+  Tasks:      TODO [#C] write script to pull jira issues and refile my issues                                                                                              :@work:
+  Tasks:      TODO [#C] YNAB mode for org                                                                                                                                  :@home:
+  Tasks:      TODO [#C] setup effort estimates                                                                                                                     :@computer:org:
+  Tasks:      TODO [#C] sort so NEXT tasks are first                                                                                                                   :@computer:
+  Tasks:      TODO [#C] Add theme to hugo themes repo                                                                                                                  :@computer:
+  Tasks:      TODO [#C] elisp get OTP tool from nebula                                                                                                                 :@computer:
+  Tasks:      TODO [#C] Segment routes in serverless for better metrics                                                                                                :@computer:
+  Tasks:      TODO [#C] clojurescript framework for creating cli apps -- like click                                                                        :@computer:sideproject:
