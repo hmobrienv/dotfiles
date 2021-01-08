@@ -2,6 +2,7 @@
 ;; Place your private configuration here
 (load! "lisp/lib")
 (load! "lisp/ui")
+(load! "lisp/aws")
 
 (if (equal (system-name) "mobrien-mbp19.local")
     (load! "lisp/vectra"))
@@ -65,6 +66,9 @@
 (setq lsp-pyls-plugins-pylint-enabled t)
 (setq lsp-flycheck-live-reporting t)
 
+(if (string-equal (system-name) "devmachine")
+    (setq doom-font (font-spec :family "Iosevka" :size 18)))
+
 ;; treemacs
 (after! treemacs
   (setq treemacs-width 53)
@@ -112,7 +116,7 @@
 (setq tramp-default-method "ssh")
 
 ;; writeroom
-(setq writeroom-width 150)
+;;(setq writeroom-width 150)
 
 ;; evil mode
 (setq evil-want-fine-undo t)
@@ -133,6 +137,7 @@
   (setq org-ellipsis " ▼ ")
   (setq org-superstar-headline-bullets-list '("●" "○"))
   (setq org-plantuml-jar-path "/usr/local/bin/plantuml")
+  (setq org-links-file        (org-file-path "links.org"))
 
   (setq org-todo-keywords
         '((sequence "TODO(t)" "NEXT(n)" "|" "DONE(d)")
@@ -180,6 +185,42 @@
                        ((org-agenda-overriding-header "Next")))
             ))
           ))
+
+  (setq org-capture-templates
+          '(("n" "Notes"
+             entry
+             (file org-notes-refile)
+             "* %?\n")
+
+            ("j" "Journal"
+             entry
+             (file org-journal-file)
+             "* %?\nEntered on %U\n  %i\n  %a")
+
+            ("w" "Work Journal"
+             entry
+             (file org-work-journal-file)
+             "* %T\n%?")
+
+            ("k" "Work Todo"
+             entry
+             (file org-inbox-file)
+             "* TODO %? :@work:\n")
+
+	          ("p" "Protocol"
+             entry
+             (file org-links-file)
+             "* %^{Title}\nSource: %u, %c\n #+BEGIN_QUOTE\n%i\n#+END_QUOTE\n\n\n%?")
+            ("L" "Protocol Link"
+             entry
+             (file org-links-file)
+             "* %? [[%:link][%:description]] \nCaptured On: %U")
+
+            ("i" "Todo"
+             entry
+             (file org-inbox-file)
+             "* TODO %?\n")
+            ))
 
   (setq org-tag-alist '(("@work" . ?w)
                         ("@home" . ?h)
