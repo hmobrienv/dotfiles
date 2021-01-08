@@ -1,11 +1,19 @@
 ;;; .doom.d/config.el -*- lexical-binding: t; -*-
 ;; Place your private configuration here
+(load! "lisp/lib")
+(load! "lisp/ui")
+
+(if (equal (system-name) "mobrien-mbp19.local")
+    (load! "lisp/vectra"))
 
 (global-auto-revert-mode 1)
+(setq exec-path (append exec-path '("~/go/bin" "~/.pyenv/shims/")))
 
-;; org-jira
-(setq jiralib-url "https://jira.vectra.io")
-(setq org-jira-working-dir (expand-file-name "~/org/work/jira"))
+(evil-set-initial-state 'awstk-s3-bucket-mode 'normal)
+
+;; magit
+(setq magit-repository-directories '(("~/vectra/" . 1)))
+(setq require-final-newline nil)
 
 ;; wakatime
 (use-package! wakatime-mode
@@ -13,6 +21,12 @@
   (setq wakatime-api-key "6e37fd13-897a-4616-96ea-5aa389d2098d")
   (global-wakatime-mode))
 
+(unless window-system
+  (global-set-key (kbd "<mouse-4>") 'scroll-down-line)
+  (global-set-key (kbd "<mouse-5>") 'scroll-up-line))
+
+(map! :leader
+      (:desc "open fish config" "f C-f" #'hmov/open-fish-config))
 
 ;; json
 (add-hook 'json-mode-hook
@@ -28,11 +42,6 @@
 (add-hook 'go-mode-hook #'lsp-go-install-save-hooks)
 
 
-;; python
-(use-package! lsp-python-ms
-  :hook (python-mode . (lambda ()
-                         (require 'lsp-python-ms)
-                         (lsp))))
 
 (use-package! python-black
   :init
@@ -42,56 +51,11 @@
         :desc "Deploy package" "d" #'deploy-package
         :desc "Blacken buffer" "b" #'python-black-buffer))
 
-
 (after! ob-jupyter
   (dolist (lang '(python julia R))
     (cl-pushnew (cons (format "jupyter-%s" lang) lang)
                 org-src-lang-modes :key #'car)))
 
-
-;; Display
-(menu-bar-mode -1)
-(setq display-line-numbers-type nil)
-(setq-default left-margin-width 3 right-margin-width 3)
-(set-window-buffer nil (current-buffer))
-(if (display-graphic-p)
-    (progn
-      (setq initial-frame-alist
-            '(
-              (width . 150)
-              (height . 80)
-              (left . 50)
-              (top . 50)))
-      (setq default-frame-alist
-            '(
-              (width . 150)
-              (height . 80)
-              (left . 50)
-              (top . 50))))
-  (progn
-    (setq initial-frame-alist'((tool-bar-lines . 0)))
-    (setq default-frame-alist'((tool-bar-lines . 0)))))
-
-(tool-bar-mode -1)
-(scroll-bar-mode -1)
-(delete-selection-mode 1)
-(global-subword-mode 1)
-(setq fancy-splash-image (concat doom-private-dir "splash.png"))
-
-;; Modeline
-(custom-set-faces!
-  '(mode-line :family "Iosevka" :height 0.90)
-  '(mode-line-inactive :family "Iosevka" :height 0.90))
-
-
-;; fonts
-;;
-;;
-
-(if (equal (system-name) "TOWER-wsl")
-    (setq doom-font (font-spec :family "Iosevka" :size 24))
-  (setq doom-font (font-spec :family "Iosevka" :size 14)))
-(setq doom-serif-font (font-spec :family "Iosevka"))
 
 ;; ivy
 (setq ivy-read-action-function #'ivy-hydra-read-action)
@@ -114,12 +78,13 @@
   (add-hook! 'lsp-ui-mode-hook
     (run-hooks (intern (format "%s-lsp-ui-hook" major-mode)))))
 
-(lsp-register-client
- (make-lsp-client :new-connection (lsp-stdio-connection '("/usr/local/bin/terraform-ls" "serve"))
-                  :major-modes '(terraform-mode)
-                  :server-id 'terraform-ls))
+;; (after! lsp-mode
+;;   (lsp-register-client
+;;    (make-lsp-client :new-connection (lsp-stdio-connection '("/usr/local/bin/terraform-ls" "serve"))
+;;                     :major-modes '(terraform-mode)
+;;                     :server-id 'terraform-ls)))
 
-(add-hook 'terraform-mode-hook #'lsp)
+;; (add-hook 'terraform-mode-hook #'lsp)
 
 (defun mobrien-go-flycheck-setup ()
   "Setup Flycheck checkers for Golang"
@@ -154,12 +119,13 @@
 
 
 (after! org
-  (require 'org-drill)
   (add-hook 'org-mode-hook 'turn-on-auto-fill)
   (setq org-directory "~/org")
   (defun org-file-path (filename)
     (concat (file-name-as-directory org-directory) filename))
 
+  (setq org-id-track-globally t)
+  (setq org-babel-clojure-backend 'cider)
   (setq org-inbox-file        (org-file-path "inbox.org"))
   (setq org-index-file        (org-file-path "gtd.org"))
   (setq org-notes-refile      (org-file-path "notes-refile.org"))
@@ -204,16 +170,16 @@
             (tags-todo "+@work-NEXT"
                        ((org-agenda-overriding-header "Next")))
             ))
-        ("w" "Work Agenda"
-         ((agenda ""
-                  ((org-agenda-span 7)
-                   (org-agenda-tag-filter-preset '("+@work"))))
-          (tags-todo "+@work+REFILE-LEVEL=2"
-               ((org-agenda-overriding-header "To Refile")))
-          (tags-todo "+@work-NEXT"
-               ((org-agenda-overriding-header "Next")))
+          ("w" "Work Agenda"
+           ((agenda ""
+                    ((org-agenda-span 7)
+                     (org-agenda-tag-filter-preset '("+@work"))))
+            (tags-todo "+@work+REFILE-LEVEL=2"
+                       ((org-agenda-overriding-header "To Refile")))
+            (tags-todo "+@work-NEXT"
+                       ((org-agenda-overriding-header "Next")))
+            ))
           ))
-        ))
 
   (setq org-tag-alist '(("@work" . ?w)
                         ("@home" . ?h)
@@ -301,7 +267,6 @@
   (setq org-agenda-files '("~/org")))
 
 
-
 (use-package! org-roam
   :commands (org-roam-insert org-roam-find-file org-roam)
   :init
@@ -309,9 +274,9 @@
   (setq org-roam-db-location "~/org/org-roam.db")
   (setq +org-roam-open-buffer-on-find-file nil)
   (map! :leader
-         :prefix "n"
-         :desc "org-roam-insert" "i" #'org-roam-insert
-         :desc "org-roam-find"   "/" #'org-roam-find-file)
+        :prefix "n"
+        :desc "org-roam-insert" "i" #'org-roam-insert
+        :desc "org-roam-find"   "/" #'org-roam-find-file)
   ;;       :desc "org-roam-buffer" "r" #'org-roam
   ;;       :desc "org-roam-capture" "c" #'org-roam-capture)
   :config
@@ -440,6 +405,17 @@
       :map clojure-mode-map
       :desc "smartparens" "s" #'hydra-smartparens/body)
 
+;; rust
+(setq lsp-rust-server 'rust-analyzer)
+(setq lsp-rust-analyzer-server-display-inlay-hints t)
+
+
+(add-hook 'emacs-lisp-mode-hook #'aggressive-indent-mode)
+(map! :localleader
+      :map emacs-lisp-mode-map
+      :desc "smartparens" "s" #'hydra-smartparens/body)
+
+(setq nrepl-force-ssh-for-remote-hosts t)
 
 ;; org capture frame for alfred
 (defun make-orgcapture-frame ()
@@ -452,113 +428,6 @@
   (select-frame-by-name "remember")
   (org-capture))
 
-;; vectra
-(defun connect-to-buildvm ()
-  "Open a connection to a buildvm"
-  (interactive)
-  (vterm-other-window "vterm-buildvm")
-  (vterm-send-string "ssh vadmin@dc-buildvm")
-  (vterm-send-return))
-
-
-
-(defun get-colossus-packages ()
-  (interactive)
-  (directory-files "/Users/mikeyobrien/vectra/colossus/colossus/python/packages"))
-
-
-(defun copy-package ()
-  (interactive)
-  (let ((brain-ip (read-string "brain ip address: "))
-        (package-name (ido-completing-read "package-name: " (get-colossus-packages))))
-    (copy-directory
-     (format "/ssh:%s|sudo:vadmin@%s:/usr/share/python/vectra-colossus-py35-201907/lib/python3.5/site-packages/%s" brain-ip brain-ip package-name)
-     (format "/Users/mikeyobrien/vectra/colossus/colossus/python/packages/%s/%s" package-name package-name) t t t)))
-
-(defun deploy-package()
-  (interactive)
-  (let ((brain-ip (read-string "brain ip address: "))
-        (package-name (ido-completing-read "package-name: " (get-colossus-packages))))
-    (async-shell-command
-     (format "rsync -azP --rsync-path=\"sudo rsync\" --delete-after --filter=':e- .gitignore' --exclude='__pycache__' %s vadmin@%s:%s"
-             (format "/Users/mikeyobrien/vectra/colossus/colossus/python/packages/%s/%s/" package-name package-name)
-             brain-ip
-             (format "/usr/share/python/vectra-colossus-py35-201907/lib/python3.5/site-packages/%s" package-name) t t t))))
-
-(defun vectra/deploy-syslog-utils ()
-  (interactive)
-  (let ((brain-ip (read-string "brain ip address: ")))
-    (copy-file
-     "/Users/mikeyobrien/vectra/colossus/colossus/python/packages/vectra_utils/src/vectra_utils/syslog_utils.py"
-     (format "/ssh:%s|sudo:%s:/opt/colossus/vectra-python3/lib/vectra_utils/syslog_utils.py" brain-ip brain-ip) t)
-    (copy-file
-     "/Users/mikeyobrien/vectra/colossus/colossus/python/packages/vectra_utils/src/vectra_utils/syslog_utils.py"
-     (format "/ssh:%s|sudo:%s:/opt/colossus/vectra-python/lib/vectra_utils/syslog_utils.py" brain-ip brain-ip) t )
-    (let ((default-directory (format "/ssh:%s|sudo:%s:" brain-ip brain-ip)))
-      (start-file-process "restart-service" (get-buffer-create "*restart-service*")
-                          "/bin/bash" "service" "detection_processing" "restart"))))
-
-
-(defun rsync-to-buildvm ()
-  (interactive)
-  (async-shell-command "rsync -azP --delete-after --filter=':e- .gitignore' --exclude='__pycache__' ~/vectra/colossus vadmin@dc-buildvm:~/"))
-
-
-(defun rsync-package-directory ()
-  (interactive)
-  (async-shell-command (format
-                        "rsync -azvr --exclude '.venv' %s vadmin@dc-buildvm:~/colossus/colossus/python/packages/%s"
-                        (get-package-dir)
-                        (file-name-nondirectory (directory-file-name (file-name-directory (get-package-dir)))))))
-
-(defun get-package-dir ()
-  (interactive)
-  (find-package-dir-in-heirarchy default-directory))
-
-(defun parent-directory (dir)
-  (unless (equal "/" dir)
-    (file-name-directory (directory-file-name dir))))
-
-(defun find-package-dir-in-heirarchy (current-dir)
-  "Search for a file named FNAME upwards through the directory hierarchy, starting from CURRENT-DIR"
-  (let ((file (concat current-dir "setup.py"))
-        (parent (parent-directory (expand-file-name current-dir))))
-    (if (file-exists-p file)
-        (parent-directory file)
-      (when parent
-        (find-package-dir-in-heirarchy parent)))))
-
-
-;; ephemeral
-(defun my/split-line (line)
-  (let* ((program-name (car (last (s-split " " (s-trim (car (s-split "-:" line)))))))
-         (body (car (last (s-split "-:" line)))))
-    (message (format "\"%s\":%s,"
-                     program-name body))))
-
-
-(defun my/walk-line-by-line ()
-  "Process each line in the buffer one by one."
-  (interactive)
-  (save-excursion
-    (goto-char (point-min))
-    (while (not (eobp))
-      (let* ((lb (line-beginning-position))
-             (le (line-end-position))
-             (ln (buffer-substring-no-properties lb le)))
-        (write-region (my/split-line ln) nil (concat default-directory "parsed") 'append)
-        (forward-line 1)))))
-
-;; calendar
-(after! calfw
-  (defun my-open-calendar ()
-    (interactive)
-    (cfw:open-calendar-buffer
-    :contents-sources
-    (list
-      (cfw:org-create-source "Green")  ; orgmode source
-      (cfw:ical-create-source "gcal" "https://outlook.office365.com/owa/calendar/12fda6cdecb74956888ce80b519a70af@vectra.ai/7e08fc0aaff641c5a174490a9fe3a31411568143993500512171/calendar.ics" "IndianRed") ; work calendar ICS
-    ))))
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.

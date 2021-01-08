@@ -13,8 +13,7 @@
        ;;japanese
 
        :completion
-       (company           ; the ultimate code completion backend
-                     ; as you type completion
+       (company           ; the ultimate code completion backend as you type completion
         +childframe)      ; nicer company ui. Emacs +26 only!
        ;;helm              ; the *other* search engine for love and life
        ;;ido               ; the other *other* search engine...
@@ -45,6 +44,7 @@
        ;;vi-tilde-fringe   ; fringe tildes to mark beyond EOB
        window-select     ; visually switch windows
        workspaces        ; tab emulation, persistence & separate workspaces
+       zen
 
        :editor
        (evil +everywhere); come to the dark side, we have cookies
@@ -75,7 +75,9 @@
        :checkers
        (syntax
         +childframe)
-       ;; spell
+       ;;(spell
+       ;;+flyspell
+       ;;+everywhere)
        ;; grammer
 
        :tools
@@ -90,7 +92,8 @@
        gist              ; interacting with github gists
        (lookup           ; helps you navigate your code and documentation
         +docsets)        ; ...or in Dash docsets locally
-       lsp
+       (lsp
+        +peek)
        magit             ; a git porcelain for Emacs
        ;;make              ; run make tasks from Emacs
        ;;pass              ; password manager for nerds
@@ -98,7 +101,7 @@
        ;;prodigy           ; FIXME managing external services & code builders
        ;;rgb               ; creating color strings
        terraform         ; infrastructure as code
-       ;;tmux              ; an API for interacting with tmux
+       ;; tmux              ; an API for interacting with tmux
        ;; upload            ; map local to remote projects via ssh/ftp
 
        :lang
@@ -131,7 +134,7 @@
        ;;lua               ; one-based indices? one-based indices
        markdown          ; writing docs for people to ignore
        ;;nim               ; python + lisp at the speed of c
-       ;;nix               ; I hereby declare "nix geht mehr!"
+       nix               ; I hereby declare "nix geht mehr!"
        ;;ocaml             ; an objective camel
        (org              ; organize your plain life in plain text
         +pomodoro
@@ -142,13 +145,12 @@
         +ipython         ; ipython/jupyter support for babel
         +jupyter
         +pandoc)          ; export-with-pandoc support
-        ;;+present)        ; using org-mode for presentations
+       ;;+present)        ; using org-mode for presentations
        ;;perl              ; write code no one else can comprehend
        ;;php               ; perl's insecure younger brother
        ;;plantuml          ; diagrams for confusing people more
        ;;purescript        ; javascript, but functional
        (python
-        +poetry
         +lsp)
        ;;qt                ; the 'cutest' gui framework ever
        ;;racket            ; a DSL for DSLs
@@ -159,7 +161,7 @@
        ;;scala             ; java, but good
        ;;scheme            ; a fully conniving family of lisps
        (sh
-         +fish)                                ; she sells {ba,z,fi}sh shells on the C xor
+        +fish)                                ; she sells {ba,z,fi}sh shells on the C xor
        ;;solidity          ; do you need a blockchain? No.
        (swift             ; who asked for emoji variables?
         +lsp)
