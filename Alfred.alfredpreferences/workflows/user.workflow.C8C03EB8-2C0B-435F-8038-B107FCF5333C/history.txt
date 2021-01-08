@@ -192,3 +192,15 @@ Action completed! <groups:4:on>
 Action completed! <groups:4:off>
 
 Action completed! <lights:7:on>
+
+Action completed! <groups:4:on>
+
+Action completed! <lights:7:on>
+
+Action completed! <lights:7:on>
+
+Action completed! <groups:13:on>
+
+Action completed! <groups:13:on>
+
+Action completed! <groups:13:on>

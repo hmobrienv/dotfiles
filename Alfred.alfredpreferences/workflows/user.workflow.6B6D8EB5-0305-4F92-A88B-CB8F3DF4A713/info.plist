@@ -2280,12 +2280,9 @@ My thanks go out to Bitwarden for their awesome product and the new CLI!</string
 	<key>variables</key>
 	<dict>
 		<key>STATUS_MESSAGE</key>
-		<string>An error occured while logging in</string>
+		<string>Unlock successful.</string>
 		<key>STATUS_MESSAGE_DESC</key>
-		<string>dyld: Library not loaded: /usr/local/opt/icu4c/lib/libicui18n.64.dylib
-  Referenced from: /usr/local/bin/node
-  Reason: image not found
-</string>
+		<string>User: hmobrienv@gmail.com</string>
 	</dict>
 	<key>variablesdontexport</key>
 	<array>
